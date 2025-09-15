@@ -7,51 +7,77 @@
     <link rel="stylesheet" href="/styles/styles.css" />
     <title>Get Out of The Paper</title>
   </head>
-</html>
-
-<body>
-  <main>
-    <div id="start-screen">
-      <h1 id="game-title-str">Get out of The Paper</h1>
-      <img
-        id="start-screen-logo"
-        src="/imgs/logo game project (1) (1).png"
-        alt=""
-      />
-      <br />
-      <button id="start-btn">Start!</button>
-      <p id="instructions">
-        Use <img id="wasd" src="/imgs/wasd.png" alt="" /> or
-        <img id="arrows" src="/imgs/arrows.png" alt="" /> and
-        <img id="space-bar" src="/imgs/space-bar.png" alt="" /> to control your
-        character!
-      </p>
-
-      <button id="sound-btn"><img src="still nothing here" alt="" /></button>
-    </div>
-
-    <div id="first-level">
-      <div class="stats">
-        <h2>Time:</h2>
-        <h2>Time Left</h2>
+  <body>
+    <main>
+      <!-- Start Screen -->
+      <div id="start-screen">
+        <h1 id="game-title-str">Get out of The Paper</h1>
+        <img
+          id="start-screen-logo"
+          src="/imgs/logo game project (1) (1).png"
+          alt="Logo"
+        />
+        <br />
+        <button id="start-btn">Start!</button>
+        <p id="instructions">
+          Use <img id="wasd" src="/imgs/wasd.png" alt="WASD" /> or
+          <img id="arrows" src="/imgs/arrows.png" alt="Arrows" /> and
+          <img id="space-bar" src="/imgs/space-bar.png" alt="Spacebar" /> to
+          control your character!
+        </p>
+        <button id="sound-btn">
+          <img src="still nothing here" alt="Sound" />
+        </button>
       </div>
-      <div id="game-screen"></div>
-    </div>
 
-    <div id="win-screen">
-      <img if="win-src-logo" src="" alt="" />
-      <h1>You Have Made It Out of The Paper</h1>
-      <br />
-      <button id="restart-btn">Get a Better Time!</button>
-    </div>
+      <!-- First Level -->
+      <div id="first-level">
+        <!-- HUD / Stats -->
+        <div class="stats">
+          <h2>Time:</h2>
+          <h2>Time Left:</h2>
+        </div>
 
-    <div id="lost-screen">
-      <img id="loss-src-logo" src="" alt="" />
-      <h1>You Didnt Make It Out of The Paper</h1>
-      <br />
-      <button id="restart-btn">Try Again!</button>
-    </div>
-  </main>
+        <!-- Game Screen -->
+        <div id="game-screen">
+          <!-- Exit -->
+          <img
+            id="exit"
+            src="/imgs/exit_the_paper-removebg-preview.png"
+            alt="Exit"
+          />
 
-  <script src="/player.js"></script>
-</body>
+          <!-- Platforms will be generated dynamically -->
+          <div id="ground-area"></div>
+
+          <!-- Player -->
+          <img
+            id="player"
+            src="/imgs/regular_monster-removebg-preview.png"
+            alt="Player"
+          />
+        </div>
+      </div>
+
+      <!-- Win Screen -->
+      <div id="win-screen">
+        <img id="win-src-logo" src="" alt="Win Logo" />
+        <h1>You Have Made It Out of The Paper</h1>
+        <br />
+        <button id="restart-btn">Get a Better Time!</button>
+      </div>
+
+      <!-- Lost Screen -->
+      <div id="lost-screen">
+        <img id="loss-src-logo" src="" alt="Lose Logo" />
+        <h1>You Didn't Make It Out of The Paper</h1>
+        <br />
+        <button id="restart-btn">Try Again!</button>
+      </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="/js/index.js"></script>
+    <script src="/js/player.js"></script>
+  </body>
+</html>
