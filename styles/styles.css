@@ -92,6 +92,8 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  padding: 0;
+  margin: 0;
 }
 
 /* -------- HUD / Stats -------- */
@@ -131,7 +133,7 @@ body {
 /* -------- Platforms / Ground -------- */
 .platform {
   position: absolute;
-  background-color: brown; /* temporary color for visibility */
+  background-color: rgb(204, 3, 3); /* temporary color for visibility */
   z-index: 1;
   border-radius: 5px;
   /* optional shadow for depth */
@@ -141,11 +143,13 @@ body {
 /* -------- Player -------- */
 #player {
   position: absolute;
-  width: 60px;
-  height: 80px;
+  width: 70px;
+  height: 100px;
   bottom: 0; /* initial bottom overridden by JS */
   left: 100px;
   z-index: 3;
+  padding: 0;
+  margin: 0;
 }
 
 /* -------- Win / Lose Screens -------- */
