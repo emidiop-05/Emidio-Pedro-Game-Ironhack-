@@ -1,7 +1,7 @@
 // ---------------- Player Setup ----------------
 const player = {
   x: 100,
-  y: 100, // Start above ground
+  y: 100,
   w: 60,
   h: 80,
   vx: 0,
@@ -14,18 +14,18 @@ const player = {
 };
 // ---------------- Enemy Setup ----------------
 const enemy = {
-  x: 400, // starting X
-  y: 150, // starting Y (above ground/platforms)
+  x: 400,
+  y: 150,
   w: 60,
   h: 80,
-  vx: 2, // speed
-  direction: 1, // 1 = right, -1 = left
+  vx: 2,
+  direction: 1,
   el: null,
 };
 
 const powerUps = [
   {
-    x: 130, // coordinates above a platform
+    x: 130,
     y: 430,
     w: 80,
     h: 80,
@@ -56,10 +56,8 @@ function updateProjectiles() {
       return;
     }
 
-    // Update DOM
     proj.el.style.left = proj.x + "px";
 
-    // Remove if off-screen
     if (proj.x > gameWidth) {
       proj.el.remove();
       projectiles.splice(index, 1);
@@ -155,22 +153,17 @@ gameArea.appendChild(enemyEl);
 enemy.el = enemyEl;
 // ---------------- Enemy Movement ----------------
 function updateEnemy() {
-  // Move enemy
   enemy.x += enemy.vx * enemy.direction;
 
-  // Randomly change direction
   if (Math.random() < 0.01) {
     enemy.direction *= -1;
   }
 
-  // Stay inside game width
   if (enemy.x <= 0) enemy.direction = 1;
   if (enemy.x + enemy.w >= gameWidth) enemy.direction = -1;
 
-  // Update DOM
   enemy.el.style.left = enemy.x + "px";
 
-  // Check collision with player
   checkEnemyCollision();
 
   requestAnimationFrame(updateEnemy);

@@ -25,22 +25,62 @@ restartBtn.addEventListener("click", () => {
 });
 
 function resetPlayer() {
-  playerEl.style.bottom = "0px";
-  playerEl.style.left = "100px";
+  const playerEl = document.getElementById("player");
 
   player.x = 100;
   player.y = 0;
   player.vx = 0;
   player.vy = 0;
-  player.onGround = false;
   player.jumping = false;
+  player.onGround = false;
+
+  player.canShoot = false;
+  playerEl.src = "imgs/char1.png";
+  playerEl.style.left = player.x + "px";
+  playerEl.style.bottom = player.y + "px";
+
+  powerUps.forEach((pu) => {
+    pu.collected = false;
+    if (pu.el) pu.el.style.display = "block";
+  });
+
+  projectiles.forEach((proj) => proj.el.remove());
+  projectiles = [];
+
+  if (!enemy) {
+    enemy = {
+      x: 400,
+      y: 150,
+      w: 60,
+      h: 80,
+      vx: 2,
+      direction: 1,
+      el: document.createElement("div"),
+    };
+
+    const enemyEl = enemy.el;
+    enemyEl.id = "enemy";
+    enemyEl.style.position = "absolute";
+    enemyEl.style.width = enemy.w + "px";
+    enemyEl.style.height = enemy.h + "px";
+    enemyEl.style.backgroundImage =
+      'url("imgs/regular_monster-removebg-preview.png")';
+    enemyEl.style.backgroundSize = "contain";
+    enemyEl.style.backgroundRepeat = "no-repeat";
+    enemyEl.style.backgroundPosition = "center";
+    enemyEl.style.left = enemy.x + "px";
+    enemyEl.style.bottom = enemy.y + "px";
+    enemyEl.style.zIndex = "5";
+    gameArea.appendChild(enemyEl);
+    enemy.el = enemyEl;
+
+    updateEnemy();
+  }
 }
 
 // ---------------- Sound ----------------
 const soundOnBtn = document.getElementById("sound-on");
 const soundOffBtn = document.getElementById("sound-off");
-
-// Only declare once
 const bgAudio = new Audio("sound/Zambolino - Faster (freetouse.com).mp3");
 bgAudio.loop = true;
 bgAudio.volume = 0.2;
@@ -77,7 +117,7 @@ startBtn.addEventListener("click", () => {
 // ---------------- Timer Setup ----------------
 let startTime = 0;
 let timerInterval = null;
-const maxTimeInMs = 60 * 335; // change time limit
+const maxTimeInMs = 60 * 335;
 
 // ---------------- Timer Functions ----------------
 function startTimer() {
@@ -107,7 +147,6 @@ function updateTimer() {
 
   timerEl.textContent = `${mm}:${ss}:${ms}`;
 
-  // If time limit reached, trigger lost screen
   if (elapsed >= maxTimeInMs) {
     timeUp();
   }
