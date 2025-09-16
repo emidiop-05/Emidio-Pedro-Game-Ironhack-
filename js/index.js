@@ -41,7 +41,7 @@ const soundOnBtn = document.getElementById("sound-on");
 const soundOffBtn = document.getElementById("sound-off");
 
 // Only declare once
-const bgAudio = new Audio("sound/Zambolino - Faster (freetouse.com).mp3"); // replace with your music
+const bgAudio = new Audio("sound/Zambolino - Faster (freetouse.com).mp3");
 bgAudio.loop = true;
 bgAudio.volume = 0.2;
 
@@ -77,7 +77,7 @@ startBtn.addEventListener("click", () => {
 // ---------------- Timer Setup ----------------
 let startTime = 0;
 let timerInterval = null;
-const maxTimeInMs = 60 * 500; // change time limit
+const maxTimeInMs = 60 * 335; // change time limit
 
 // ---------------- Timer Functions ----------------
 function startTimer() {

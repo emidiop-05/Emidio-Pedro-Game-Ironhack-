@@ -1,10 +1,7 @@
-/* -------- Reset -------- */
 body {
   padding: 0;
   margin: 0;
-}
-
-/* -------- Start Screen -------- */
+} /* -------- Start Screen -------- */
 #start-screen {
   padding: 20px 0;
   background-image: url("../imgs/background-scenario.png");
@@ -14,7 +11,6 @@ body {
   width: 100vw;
   height: 100vh;
 }
-
 #start-btn {
   position: absolute;
   left: 50%;
@@ -28,33 +24,29 @@ body {
   transition: background-color 0.2s ease, font-size 0.6s ease, width 0.6s ease,
     height 0.6s ease;
 }
-
 #start-btn:hover {
   background-color: white;
   font-size: 30px;
   height: 75px;
   width: 175px;
 }
-
 #start-screen-logo {
   position: relative;
-  top: -43px;
+  top: 0;
   display: block;
   margin: 0 auto;
   height: 400px;
   z-index: 1;
 }
-
 #game-title-str {
   position: absolute;
-  top: 90px;
+  top: 143px;
   left: 50%;
   transform: translateX(-50%);
   height: 150px;
   z-index: 2;
   font-size: 50px;
 }
-
 #sound-btn {
   display: flex;
   flex-direction: column;
@@ -63,7 +55,6 @@ body {
   left: 50px;
   gap: 5px;
 }
-
 #sound-btn button {
   height: 30px;
   width: 30px;
@@ -72,19 +63,16 @@ body {
   background: transparent;
   cursor: pointer;
 }
-
 #sound-btn button img {
   height: 100%;
   width: 100%;
   object-fit: contain;
   display: block;
 }
-
 #sound-btn button.active {
   background-color: lightblue;
   border-radius: 5px;
 }
-
 #controls {
   position: absolute;
   top: 580px;
@@ -94,7 +82,6 @@ body {
   z-index: 2;
   font-size: 20px;
 }
-
 #wasd,
 #arrows,
 #space-bar {
@@ -102,7 +89,6 @@ body {
   height: auto;
   vertical-align: middle;
 }
-
 #instructions {
   position: absolute;
   top: 450px;
@@ -110,9 +96,7 @@ body {
   transform: translateX(-50%);
   z-index: 2;
   font-size: 20px;
-}
-
-/* -------- Level Wrapper -------- */
+} /* -------- Level Wrapper -------- */
 #first-level {
   position: relative;
   background-image: url("/imgs/background-scenario.png");
@@ -124,17 +108,14 @@ body {
   overflow: hidden;
   padding: 0;
   margin: 0;
-  display: none;
 }
-
 #game-timer {
   position: relative;
   left: 20px;
 }
 #time-limit {
   position: relative;
-}
-/* -------- HUD / Stats -------- */
+} /* -------- HUD / Stats -------- */
 .stats {
   position: absolute;
   top: 10px;
@@ -148,17 +129,20 @@ body {
   font-weight: bold;
   text-shadow: 1px 1px 2px black;
   z-index: 10;
-}
-
-/* -------- Playable Game Screen -------- */
+} /* -------- Playable Game Screen -------- */
 #game-screen {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
+} /* -------- Exit Goal -------- */
+
+.power-up {
+  width: 180px;
+  height: 180px;
+  z-index: 4;
 }
 
-/* -------- Exit Goal -------- */
 #exit {
   position: absolute;
   bottom: 50px;
@@ -166,9 +150,7 @@ body {
   width: 150px;
   height: auto;
   z-index: 2;
-}
-
-/* -------- Platforms / Ground -------- */
+} /* -------- Platforms / Ground -------- */
 .platform {
   position: absolute;
   background-color: rgb(204, 3, 3);
@@ -176,16 +158,13 @@ body {
   border-radius: 5px;
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
 }
-
 .lava-ink {
   position: absolute;
   background-image: url("/imgs/ink-lava.png");
   background-size: cover;
   background-repeat: no-repeat;
   z-index: 0;
-}
-
-/* -------- Player -------- */
+} /* -------- Player -------- */
 #player {
   position: absolute;
   width: 65px;
@@ -195,9 +174,7 @@ body {
   z-index: 3;
   padding: 0;
   margin: 0;
-}
-
-/* -------- Win / Lose Screens -------- */
+} /* -------- Win / Lose Screens -------- */
 #win-screen {
   padding: 20px 0;
   background-image: url("../imgs/background-scenario.png");
@@ -208,14 +185,12 @@ body {
   height: 100vh;
   display: none;
 }
-
 #win-screen h1 {
   position: relative;
   margin: 0 auto;
   text-align: center;
   color: rgb(0, 170, 186);
 }
-
 #win-src-logo {
   position: relative;
   top: 0;
@@ -225,7 +200,6 @@ body {
   z-index: 1;
   left: 30px;
 }
-
 #restart-btn {
   position: absolute;
   right: 500px;
@@ -237,14 +211,12 @@ body {
   transition: background-color 0.2s ease, font-size 0.6s ease, width 0.6s ease,
     height 0.6s ease;
 }
-
 #restart-btn:hover {
   background-color: white;
   font-size: 20px;
   height: 75px;
   width: 175px;
 }
-
 #lost-screen {
   padding: 20px 0;
   background-image: url("../imgs/background-scenario.png");

@@ -10,7 +10,62 @@ const player = {
   jumpPower: 12,
   jumping: false,
   onGround: false,
+  canShoot: false,
 };
+// ---------------- Enemy Setup ----------------
+const enemy = {
+  x: 400, // starting X
+  y: 150, // starting Y (above ground/platforms)
+  w: 60,
+  h: 80,
+  vx: 2, // speed
+  direction: 1, // 1 = right, -1 = left
+  el: null,
+};
+
+const powerUps = [
+  {
+    x: 130, // coordinates above a platform
+    y: 430,
+    w: 80,
+    h: 80,
+    collected: false,
+    el: null,
+  },
+];
+
+let projectiles = [];
+function updateProjectiles() {
+  projectiles.forEach((proj, index) => {
+    proj.x += proj.vx;
+
+    const enemyBox = { x: enemy.x, y: enemy.y, w: enemy.w, h: enemy.h };
+    const projBox = { x: proj.x, y: proj.y, w: proj.w, h: proj.h };
+
+    const horizontal =
+      projBox.x + projBox.w > enemyBox.x && projBox.x < enemyBox.x + enemyBox.w;
+    const vertical =
+      projBox.y + projBox.h > enemyBox.y && projBox.y < enemyBox.y + enemyBox.h;
+
+    if (horizontal && vertical) {
+      proj.el.remove();
+      projectiles.splice(index, 1);
+
+      enemy.x = 0;
+      enemy.y = 0;
+      return;
+    }
+
+    // Update DOM
+    proj.el.style.left = proj.x + "px";
+
+    // Remove if off-screen
+    if (proj.x > gameWidth) {
+      proj.el.remove();
+      projectiles.splice(index, 1);
+    }
+  });
+}
 
 const gameArea = document.getElementById("game-screen");
 const gameWidth = gameArea.offsetWidth;
@@ -31,7 +86,6 @@ const platformsData = [
 let platforms = [];
 const groundArea = document.getElementById("ground-area");
 
-// Create visual platforms and keep references
 platformsData.forEach((plat) => {
   const div = document.createElement("div");
   div.classList.add("platform");
@@ -67,6 +121,99 @@ lavaData.forEach((lava) => {
   });
 });
 
+powerUps.forEach((pu) => {
+  const div = document.createElement("div");
+  div.classList.add("power-up");
+  div.style.left = pu.x + "px";
+  div.style.bottom = pu.y + "px";
+  div.style.width = pu.w + "px";
+  div.style.height = pu.h + "px";
+  div.style.backgroundImage = 'url("imgs/luckyblock.png")';
+  div.style.backgroundSize = "contain";
+  div.style.backgroundRepeat = "no-repeat";
+  div.style.position = "absolute";
+  div.style.zIndex = "4";
+  gameArea.appendChild(div);
+  pu.el = div;
+});
+
+// ---------------- Enemy DOM ----------------
+const enemyEl = document.createElement("div");
+enemyEl.id = "enemy";
+enemyEl.style.position = "absolute";
+enemyEl.style.width = enemy.w + "px";
+enemyEl.style.height = enemy.h + "px";
+enemyEl.style.backgroundImage =
+  'url("imgs/regular_monster-removebg-preview.png")';
+enemyEl.style.backgroundSize = "contain";
+enemyEl.style.backgroundRepeat = "no-repeat";
+enemyEl.style.backgroundPosition = "center";
+enemyEl.style.left = enemy.x + "px";
+enemyEl.style.bottom = enemy.y + "px";
+enemyEl.style.zIndex = "5";
+gameArea.appendChild(enemyEl);
+enemy.el = enemyEl;
+// ---------------- Enemy Movement ----------------
+function updateEnemy() {
+  // Move enemy
+  enemy.x += enemy.vx * enemy.direction;
+
+  // Randomly change direction
+  if (Math.random() < 0.01) {
+    enemy.direction *= -1;
+  }
+
+  // Stay inside game width
+  if (enemy.x <= 0) enemy.direction = 1;
+  if (enemy.x + enemy.w >= gameWidth) enemy.direction = -1;
+
+  // Update DOM
+  enemy.el.style.left = enemy.x + "px";
+
+  // Check collision with player
+  checkEnemyCollision();
+
+  requestAnimationFrame(updateEnemy);
+}
+
+// ---------------- Enemy Collision ----------------
+function checkEnemyCollision() {
+  const playerBox = {
+    x: player.x,
+    y: player.y,
+    w: player.w,
+    h: player.h,
+  };
+
+  const enemyBox = {
+    x: enemy.x,
+    y: enemy.y,
+    w: enemy.w,
+    h: enemy.h,
+  };
+
+  const horizontal =
+    playerBox.x + playerBox.w > enemyBox.x &&
+    playerBox.x < enemyBox.x + enemyBox.w;
+  const vertical =
+    playerBox.y + playerBox.h > enemyBox.y &&
+    playerBox.y < enemyBox.y + enemyBox.h;
+
+  if (horizontal && vertical) {
+    player.x = 100;
+    player.y = 0;
+    player.vx = 0;
+    player.vy = 0;
+    player.jumping = false;
+    player.onGround = false;
+
+    const playerEl = document.getElementById("player");
+    playerEl.style.left = player.x + "px";
+    playerEl.style.bottom = player.y + "px";
+  }
+}
+
+updateEnemy();
 // ---------------- Controls ----------------
 document.addEventListener("keydown", (e) => {
   if (keys.hasOwnProperty(e.key)) {
@@ -76,6 +223,12 @@ document.addEventListener("keydown", (e) => {
 });
 document.addEventListener("keyup", (e) => {
   if (keys.hasOwnProperty(e.key)) keys[e.key] = false;
+});
+
+document.addEventListener("keydown", (e) => {
+  if (player.canShoot && e.key === "e") {
+    shootProjectile();
+  }
 });
 
 // ---------------- Controls ----------------
@@ -97,11 +250,10 @@ document.addEventListener("keyup", (e) => {
 const gravity = 0.5;
 const GROUND_TOLERANCE = 5;
 
-// ---------------- Improved Collision Function ----------------
+// ---------------- Collision Function ----------------
 function checkPlatformCollision() {
   player.onGround = false;
 
-  // Store the next position to check for collisions
   const nextX = player.x + player.vx;
   const nextY = player.y + player.vy;
 
@@ -116,20 +268,17 @@ function checkPlatformCollision() {
     const playerLeft = nextX;
     const playerRight = nextX + player.w;
 
-    // Check if player is colliding with platform
     if (
       playerRight > platLeft &&
       playerLeft < platRight &&
       playerTop > platBottom &&
       playerBottom < platTop
     ) {
-      // Calculate overlap on each side
       const overlapTop = Math.abs(playerBottom - platTop);
       const overlapBottom = Math.abs(playerTop - platBottom);
       const overlapLeft = Math.abs(playerRight - platLeft);
       const overlapRight = Math.abs(playerLeft - platRight);
 
-      // Find the smallest overlap to determine collision side
       const minOverlap = Math.min(
         overlapTop,
         overlapBottom,
@@ -138,28 +287,23 @@ function checkPlatformCollision() {
       );
 
       if (minOverlap === overlapTop) {
-        // Top collision (landing on platform)
         player.y = platTop;
         player.vy = 0;
         player.onGround = true;
         player.jumping = false;
       } else if (minOverlap === overlapBottom) {
-        // Bottom collision (hitting head)
         player.y = platBottom - player.h;
         player.vy = 0;
       } else if (minOverlap === overlapLeft) {
-        // Left collision
         player.x = platLeft - player.w;
         player.vx = 0;
       } else if (minOverlap === overlapRight) {
-        // Right collision
         player.x = platRight;
         player.vx = 0;
       }
     }
   });
 
-  // Floor collision
   if (player.y <= 0) {
     player.y = 0;
     player.vy = 0;
@@ -175,9 +319,8 @@ function checkLavaCollision() {
     const vertical = player.y + player.h > lava.y && player.y < lava.y + lava.h;
 
     if (horizontal && vertical) {
-      // Reset player to start
-      player.x = 100; // starting X
-      player.y = 0; // starting Y
+      player.x = 100;
+      player.y = 0;
       player.vx = 0;
       player.vy = 0;
       player.jumping = false;
@@ -199,12 +342,11 @@ function checkExitCollision() {
 
   const playerBox = {
     x: player.x,
-    y: player.y, // bottom-based, same as your player object
+    y: player.y,
     w: player.w,
     h: player.h,
   };
 
-  // AABB collision check
   const horizontal =
     playerBox.x + playerBox.w > exit.x && playerBox.x < exit.x + exit.w;
   const vertical =
@@ -222,41 +364,32 @@ function levelComplete() {
 
 // ---------------- Game Loop ----------------
 function updatePlayer() {
-  // Horizontal movement
   player.vx = 0;
   if (keys.ArrowLeft || keys.a) player.vx = -player.speed;
   if (keys.ArrowRight || keys.d) player.vx = player.speed;
 
-  // Jump
   if (keys[" "] && player.onGround && !player.jumping) {
     player.vy = player.jumpPower;
     player.jumping = true;
     player.onGround = false;
   }
 
-  // Apply gravity
   if (!player.onGround) {
     player.vy -= gravity;
   }
 
-  // Store previous position
-  const prevX = player.x;
-  const prevY = player.y;
-
-  // Update position
   player.x += player.vx;
   player.y += player.vy;
 
-  // Check collisions
   checkPlatformCollision();
   checkLavaCollision();
   checkExitCollision();
+  checkPowerUpCollision();
+  updateProjectiles();
 
-  // Keep player inside horizontal bounds
   if (player.x < 0) player.x = 0;
   if (player.x + player.w > gameWidth) player.x = gameWidth - player.w;
 
-  // Update DOM
   const playerEl = document.getElementById("player");
   playerEl.style.left = player.x + "px";
   playerEl.style.bottom = player.y + "px";
@@ -264,5 +397,49 @@ function updatePlayer() {
   requestAnimationFrame(updatePlayer);
 }
 
-// Start loop
+// ---------------- Power-up Collision ----------------
+function checkPowerUpCollision() {
+  powerUps.forEach((pu) => {
+    if (pu.collected) return;
+
+    const horizontal = player.x + player.w > pu.x && player.x < pu.x + pu.w;
+    const vertical = player.y + player.h > pu.y && player.y < pu.y + pu.h;
+
+    if (horizontal && vertical) {
+      pu.collected = true;
+      pu.el.style.display = "none";
+      const playerEl = document.getElementById("player");
+      playerEl.src = "imgs/char-with-powerUp.png";
+      player.canShoot = true;
+    }
+  });
+}
+function shootProjectile() {
+  const proj = {
+    x: player.x + player.w / 2,
+    y: player.y + player.h / 2,
+    w: 60,
+    h: 60,
+    vx: 4,
+    el: null,
+  };
+
+  const div = document.createElement("div");
+  div.classList.add("projectile");
+  div.style.position = "absolute";
+  div.style.left = proj.x + "px";
+  div.style.bottom = proj.y + "px";
+  div.style.width = proj.w + "px";
+  div.style.height = proj.h + "px";
+  div.style.backgroundImage = 'url("imgs/shield-ammo.png")';
+  div.style.backgroundSize = "contain";
+  div.style.backgroundRepeat = "no-repeat";
+  div.style.backgroundPosition = "center";
+  div.style.zIndex = "5";
+  gameArea.appendChild(div);
+
+  proj.el = div;
+  projectiles.push(proj);
+}
+
 updatePlayer();
