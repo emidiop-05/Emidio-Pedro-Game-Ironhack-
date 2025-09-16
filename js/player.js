@@ -199,12 +199,12 @@ function checkExitCollision() {
 
   const playerBox = {
     x: player.x,
-    y: groundArea.offsetHeight - (player.y + player.h), // convert bottom→top
+    y: player.y, // bottom-based, same as your player object
     w: player.w,
     h: player.h,
   };
 
-  // Basic AABB (axis-aligned bounding box) overlap check
+  // AABB collision check
   const horizontal =
     playerBox.x + playerBox.w > exit.x && playerBox.x < exit.x + exit.w;
   const vertical =
