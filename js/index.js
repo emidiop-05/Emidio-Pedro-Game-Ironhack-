@@ -5,25 +5,22 @@ const restartBtn = document.getElementById("restart-btn");
 const firstLevel = document.getElementById("first-level");
 const playerEl = document.getElementById("player");
 
-// Start button → show game
 startBtn.addEventListener("click", () => {
-  startScreen.style.display = "none"; // hide start screen
-  winScreen.style.display = "none"; // just in case
-  firstLevel.style.display = "block"; // show game screen
+  startScreen.style.display = "none";
+  winScreen.style.display = "none";
+  firstLevel.style.display = "block";
 
   resetPlayer();
 });
 
-// Restart button → go back to start screen
 restartBtn.addEventListener("click", () => {
   winScreen.style.display = "none";
   firstLevel.style.display = "none";
   startScreen.style.display = "block";
 
-  resetPlayer(); // optional, reset player so next run starts clean
+  resetPlayer();
 });
 
-// Function to reset player position and variables
 function resetPlayer() {
   playerEl.style.bottom = "0px";
   playerEl.style.left = "100px";
@@ -35,6 +32,44 @@ function resetPlayer() {
   player.onGround = false;
   player.jumping = false;
 }
+
+// ---------------- Sound ----------------
+const soundOnBtn = document.getElementById("sound-on");
+const soundOffBtn = document.getElementById("sound-off");
+
+// Only declare once
+const bgAudio = new Audio("sound/Zambolino - Faster (freetouse.com).mp3"); // replace with your music
+bgAudio.loop = true;
+bgAudio.volume = 0.2;
+
+function toggleSound(isOn) {
+  bgAudio.muted = !isOn;
+  if (isOn) {
+    soundOnBtn.classList.add("active");
+    soundOffBtn.classList.remove("active");
+  } else {
+    soundOnBtn.classList.remove("active");
+    soundOffBtn.classList.add("active");
+  }
+}
+
+soundOnBtn.addEventListener("click", () => toggleSound(true));
+soundOffBtn.addEventListener("click", () => toggleSound(false));
+
+// ---------------- Hook Sound to Start ----------------
+startBtn.addEventListener("click", () => {
+  startScreen.style.display = "none";
+  winScreen.style.display = "none";
+  firstLevel.style.display = "block";
+
+  resetPlayer();
+  resetTimer();
+  startTimer();
+
+  bgAudio.play().catch(() => {
+    console.log("Autoplay blocked, user interaction required.");
+  });
+});
 
 // ---------------- Timer Setup ----------------
 let startTime = 0;

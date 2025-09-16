@@ -55,6 +55,36 @@ body {
   font-size: 50px;
 }
 
+#sound-btn {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 20px;
+  left: 50px;
+  gap: 5px;
+}
+
+#sound-btn button {
+  height: 30px;
+  width: 30px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+#sound-btn button img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+#sound-btn button.active {
+  background-color: lightblue; /* active highlight */
+  border-radius: 5px;
+}
+
 #controls {
   position: absolute;
   top: 580px;
@@ -158,7 +188,7 @@ body {
 /* -------- Player -------- */
 #player {
   position: absolute;
-  width: 70px;
+  width: 65px;
   height: 100px;
   bottom: 0; /* initial bottom overridden by JS */
   left: 100px;
