@@ -43,11 +43,29 @@ platformsData.forEach((plat) => {
   platforms.push(plat);
 });
 
-const lavaData = [
-  { x: 150, y: 0, w: 100, h: 20 },
-  { x: 400, y: 0, w: 120, h: 20 },
-  { x: 600, y: 0, w: 200, h: 20 },
-];
+let lavaInk = [];
+const lavaArea = document.getElementById("lava-area");
+
+const lavaData = [{ x: 400, y: 0, w: 850, h: 20 }];
+
+lavaData.forEach((lava) => {
+  const div = document.createElement("div");
+  div.classList.add("lava-ink");
+  div.style.left = lava.x + "px";
+  div.style.bottom = lava.y + "px";
+  div.style.width = lava.w + "px";
+  div.style.height = lava.h + "px";
+
+  lavaArea.appendChild(div);
+
+  lavaInk.push({
+    el: div,
+    x: lava.x,
+    y: lava.y,
+    w: lava.w,
+    h: lava.h,
+  });
+});
 
 // ---------------- Controls ----------------
 document.addEventListener("keydown", (e) => {
@@ -150,6 +168,58 @@ function checkPlatformCollision() {
   }
 }
 
+function checkLavaCollision() {
+  lavaInk.forEach((lava) => {
+    const horizontal =
+      player.x + player.w > lava.x && player.x < lava.x + lava.w;
+    const vertical = player.y + player.h > lava.y && player.y < lava.y + lava.h;
+
+    if (horizontal && vertical) {
+      // Reset player to start
+      player.x = 100; // starting X
+      player.y = 0; // starting Y
+      player.vx = 0;
+      player.vy = 0;
+      player.jumping = false;
+      player.onGround = false;
+    }
+  });
+}
+
+// ---- EXIT COLLISION ----
+const exitEl = document.getElementById("exit");
+
+function checkExitCollision() {
+  const exit = {
+    x: exitEl.offsetLeft,
+    y: exitEl.offsetTop,
+    w: exitEl.offsetWidth,
+    h: exitEl.offsetHeight,
+  };
+
+  const playerBox = {
+    x: player.x,
+    y: groundArea.offsetHeight - (player.y + player.h), // convert bottom→top
+    w: player.w,
+    h: player.h,
+  };
+
+  // Basic AABB (axis-aligned bounding box) overlap check
+  const horizontal =
+    playerBox.x + playerBox.w > exit.x && playerBox.x < exit.x + exit.w;
+  const vertical =
+    playerBox.y + playerBox.h > exit.y && playerBox.y < exit.y + exit.h;
+
+  if (horizontal && vertical) {
+    levelComplete();
+  }
+}
+
+function levelComplete() {
+  document.getElementById("first-level").style.display = "none";
+  document.getElementById("win-screen").style.display = "block";
+}
+
 // ---------------- Game Loop ----------------
 function updatePlayer() {
   // Horizontal movement
@@ -179,6 +249,8 @@ function updatePlayer() {
 
   // Check collisions
   checkPlatformCollision();
+  checkLavaCollision();
+  checkExitCollision();
 
   // Keep player inside horizontal bounds
   if (player.x < 0) player.x = 0;

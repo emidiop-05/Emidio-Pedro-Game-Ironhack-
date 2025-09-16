@@ -140,6 +140,14 @@ body {
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
 }
 
+.lava-ink {
+  position: absolute;
+  background-image: url("/imgs/ink-lava.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 0; /* below player */
+}
+
 /* -------- Player -------- */
 #player {
   position: absolute;
@@ -153,7 +161,51 @@ body {
 }
 
 /* -------- Win / Lose Screens -------- */
-#win-screen,
+#win-screen {
+  padding: 20px 0;
+  background-image: url("../imgs/background-scenario.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+}
+
+#win-screen h1 {
+  position: relative;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#win-src-logo {
+  position: relative;
+  top: 0;
+  display: block;
+  margin: 0 auto;
+  height: 300px;
+  z-index: 1;
+  left: 30px;
+}
+
+#restart-btn {
+  position: absolute;
+  right: 500px;
+  height: 65px;
+  width: 165px;
+  background-color: lightblue;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: background-color 0.2s ease, font-size 0.6s ease, width 0.6s ease,
+    height 0.6s ease;
+}
+
+#restart-btn:hover {
+  background-color: white;
+  font-size: 20px;
+  height: 75px;
+  width: 175px;
+}
+
 #lost-screen {
   display: none;
 }
