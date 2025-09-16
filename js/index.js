@@ -1,9 +1,12 @@
 const startScreen = document.getElementById("start-screen");
 const winScreen = document.getElementById("win-screen");
+const lostScreen = document.getElementById("lost-screen");
 const startBtn = document.getElementById("start-btn");
 const restartBtn = document.getElementById("restart-btn");
 const firstLevel = document.getElementById("first-level");
 const playerEl = document.getElementById("player");
+const lostRestartBtn = document.getElementById("restart-btn-lost");
+const timerEl = document.getElementById("timer");
 
 startBtn.addEventListener("click", () => {
   startScreen.style.display = "none";
@@ -73,68 +76,64 @@ startBtn.addEventListener("click", () => {
 
 // ---------------- Timer Setup ----------------
 let startTime = 0;
-let timerInterval;
+let timerInterval = null;
+const maxTimeInMs = 60 * 500; // change time limit
 
-const timerEl = document.getElementById("timer");
-
-// Start the timer
+// ---------------- Timer Functions ----------------
 function startTimer() {
   startTime = Date.now();
-  timerInterval = setInterval(updateTimer, 10); // update every 10ms
+  timerInterval = setInterval(updateTimer, 10);
 }
 
-// Stop the timer
 function stopTimer() {
   clearInterval(timerInterval);
+  timerInterval = null;
 }
 
-// Reset the timer
 function resetTimer() {
-  clearInterval(timerInterval);
+  stopTimer();
   timerEl.textContent = "00:00:00";
 }
 
-// Update the timer display
 function updateTimer() {
-  const elapsed = Date.now() - startTime; // milliseconds
+  const elapsed = Date.now() - startTime;
   const minutes = Math.floor(elapsed / 60000);
   const seconds = Math.floor((elapsed % 60000) / 1000);
   const milliseconds = Math.floor((elapsed % 1000) / 10);
 
-  // Format with leading zeros
   const mm = String(minutes).padStart(2, "0");
   const ss = String(seconds).padStart(2, "0");
   const ms = String(milliseconds).padStart(2, "0");
 
   timerEl.textContent = `${mm}:${ss}:${ms}`;
+
+  // If time limit reached, trigger lost screen
+  if (elapsed >= maxTimeInMs) {
+    timeUp();
+  }
 }
 
-// ---------------- Hook Timer into Game ----------------
+// ---------------- Time Up Function ----------------
+function timeUp() {
+  stopTimer();
+  firstLevel.style.display = "none";
+  lostScreen.style.display = "block";
+}
 
-// Start the timer when the game starts
+// ---------------- Button Event Listeners ----------------
+
 startBtn.addEventListener("click", () => {
   startScreen.style.display = "none";
-  winScreen.style.display = "none";
   firstLevel.style.display = "block";
+  lostScreen.style.display = "none";
 
-  resetPlayer();
   resetTimer();
   startTimer();
 });
 
-// Stop the timer when the player wins
-function levelComplete() {
-  firstLevel.style.display = "none";
-  winScreen.style.display = "block";
-  stopTimer(); // stop timer when level ends
-}
-
-// Reset timer when going back to start screen
-restartBtn.addEventListener("click", () => {
-  winScreen.style.display = "none";
-  firstLevel.style.display = "none";
+lostRestartBtn.addEventListener("click", () => {
+  lostScreen.style.display = "none";
   startScreen.style.display = "block";
 
-  resetPlayer();
   resetTimer();
 });

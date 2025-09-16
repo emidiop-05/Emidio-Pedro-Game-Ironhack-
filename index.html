@@ -35,7 +35,6 @@
 
       <!-- First Level -->
       <div id="first-level">
-        <!-- HUD / Stats -->
         <div class="stats">
           <h2 id="game-timer">Time: <span id="timer">00:00:00</span></h2>
           <h2 id="time-limit">Time Limit: <span>01:00:00</span></h2>
@@ -43,18 +42,14 @@
 
         <!-- Game Screen -->
         <div id="game-screen">
-          <!-- Exit -->
           <img
             id="exit"
             src="/imgs/exit_the_paper-removebg-preview.png"
             alt="Exit"
           />
-
-          <!-- Platforms will be generated dynamically -->
           <div id="ground-area"></div>
           <div id="lava-area"></div>
 
-          <!-- Player -->
           <img id="player" src="/imgs/char1.png" alt="Player" />
         </div>
       </div>
@@ -73,10 +68,14 @@
 
       <!-- Lost Screen -->
       <div id="lost-screen">
-        <img id="loss-src-logo" src="" alt="Lose Logo" />
-        <h1>You Didn't Make It Out of The Paper</h1>
+        <img
+          id="loss-src-logo"
+          src="/imgs/logo game project (1) (1).png"
+          alt="Lose Logo"
+        />
+        <h1>You Didn't Make It Out of The Paper...</h1>
         <br />
-        <button id="restart-btn">Try Again!</button>
+        <button id="restart-btn-lost">Try Again!</button>
       </div>
     </main>
 

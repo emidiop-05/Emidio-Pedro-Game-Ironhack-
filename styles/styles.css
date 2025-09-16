@@ -81,7 +81,7 @@ body {
 }
 
 #sound-btn button.active {
-  background-color: lightblue; /* active highlight */
+  background-color: lightblue;
   border-radius: 5px;
 }
 
@@ -124,6 +124,7 @@ body {
   overflow: hidden;
   padding: 0;
   margin: 0;
+  display: none;
 }
 
 #game-timer {
@@ -170,10 +171,9 @@ body {
 /* -------- Platforms / Ground -------- */
 .platform {
   position: absolute;
-  background-color: rgb(204, 3, 3); /* temporary color for visibility */
+  background-color: rgb(204, 3, 3);
   z-index: 1;
   border-radius: 5px;
-  /* optional shadow for depth */
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
 }
 
@@ -206,6 +206,7 @@ body {
   background-repeat: no-repeat;
   width: 100vw;
   height: 100vh;
+  display: none;
 }
 
 #win-screen h1 {
@@ -245,5 +246,48 @@ body {
 }
 
 #lost-screen {
+  padding: 20px 0;
+  background-image: url("../imgs/background-scenario.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
   display: none;
+}
+
+#loss-src-logo {
+  position: relative;
+  top: 0;
+  display: block;
+  margin: 0 auto;
+  height: 300px;
+  z-index: 1;
+  left: 30px;
+}
+
+#restart-btn-lost {
+  position: absolute;
+  right: 500px;
+  height: 65px;
+  width: 165px;
+  background-color: rgb(244, 117, 117);
+  border-radius: 10px;
+  font-weight: bold;
+  transition: background-color 0.2s ease, font-size 0.6s ease, width 0.6s ease,
+    height 0.6s ease;
+}
+
+#restart-btn-lost:hover {
+  background-color: white;
+  font-size: 20px;
+  height: 75px;
+  width: 175px;
+}
+
+#lost-screen h1 {
+  position: relative;
+  margin: 0 auto;
+  text-align: center;
+  color: rgb(186, 0, 0);
 }
