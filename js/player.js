@@ -1,27 +1,27 @@
 // ---------------- Player Setup ----------------
 const player = {
-  x: 100,
-  y: 80,
-  w: 60,
-  h: 80,
+  x: 125, // 100 * 1.25
+  y: 100, // 80 * 1.25
+  w: 75, // 60 * 1.25
+  h: 100, // 80 * 1.25
   vx: 0,
   vy: 0,
   speed: 4,
-  jumpPower: 12,
+  jumpPower: 14,
   jumping: false,
   onGround: false,
   canShoot: false,
 };
 
 const player2 = {
-  x: 100,
-  y: 35,
-  w: 60,
-  h: 80,
+  x: 125, // 100 * 1.25
+  y: 43.75, // 35 * 1.25
+  w: 75, // 60 * 1.25
+  h: 100, // 80 * 1.25
   vx: 0,
   vy: 0,
   speed: 4,
-  jumpPower: 12,
+  jumpPower: 14,
   jumping: false,
   onGround: true,
   canShoot: false,
@@ -29,10 +29,10 @@ const player2 = {
 
 // ---------------- Enemy Setup ----------------
 const enemy = {
-  x: 400,
-  y: 150,
-  w: 60,
-  h: 80,
+  x: 500, // 400 * 1.25
+  y: 187.5, // 150 * 1.25
+  w: 75, // 60 * 1.25
+  h: 100, // 80 * 1.25
   vx: 2,
   vy: 0,
   onGround: false,
@@ -42,14 +42,15 @@ const enemy = {
 
 const powerUps = [
   {
-    x: 130,
-    y: 430,
-    w: 80,
-    h: 80,
+    x: 162.5, // 130 * 1.25
+    y: 537.5, // 430 * 1.25
+    w: 100, // 80 * 1.25
+    h: 100, // 80 * 1.25
     collected: false,
     el: null,
   },
 ];
+
 let currentLevel = 1;
 // ---------------- Physics ----------------
 const gravity = 0.5;
@@ -91,17 +92,17 @@ const gameWidth = gameArea.offsetWidth;
 
 // ---------------- Platforms ----------------
 const platformsData = [
-  { x: 0, y: 0, w: 400, h: 35 },
-  { x: 850, y: 0, w: 300, h: 35 },
-  { x: 1100, y: 0, w: 60, h: 90 },
-  { x: 350, y: 130, w: 150, h: 20 },
-  { x: 330, y: 330, w: 150, h: 20 },
-  { x: 130, y: 430, w: 75, h: 20 },
-  { x: 500, y: 200, w: 200, h: 20 },
-  { x: 750, y: 150, w: 250, h: 20 },
-  { x: 850, y: 300, w: 50, h: 20 },
-  { x: 650, y: 400, w: 50, h: 20 },
-  { x: 850, y: 500, w: 50, h: 20 },
+  { x: 0, y: 0, w: 500, h: 43.75 }, // multiplied 1.25
+  { x: 1062.5, y: 0, w: 375, h: 43.75 },
+  { x: 1375, y: 0, w: 75, h: 112.5 },
+  { x: 437.5, y: 162.5, w: 187.5, h: 25 },
+  { x: 412.5, y: 412.5, w: 187.5, h: 25 },
+  { x: 162.5, y: 537.5, w: 93.75, h: 25 },
+  { x: 625, y: 250, w: 250, h: 25 },
+  { x: 937.5, y: 187.5, w: 312.5, h: 25 },
+  { x: 1062.5, y: 375, w: 62.5, h: 25 },
+  { x: 812.5, y: 500, w: 62.5, h: 25 },
+  { x: 1062.5, y: 625, w: 62.5, h: 25 },
 ];
 
 let platforms = [];
@@ -121,7 +122,7 @@ platformsData.forEach((plat) => {
 let lavaInk = [];
 const lavaArea = document.getElementById("lava-area");
 
-const lavaData = [{ x: 400, y: 0, w: 850, h: 20 }];
+const lavaData = [{ x: 500, y: 0, w: 1062.5, h: 25 }];
 
 lavaData.forEach((lava) => {
   const div = document.createElement("div");
@@ -160,16 +161,16 @@ powerUps.forEach((pu) => {
 
 // ---------------- Level 2 Platforms ----------------
 const platformsData2 = [
-  { x: 0, y: 0, w: 200, h: 35 },
-  { x: 850, y: 0, w: 400, h: 35 },
-  { x: 350, y: 130, w: 150, h: 20 },
-  { x: 330, y: 330, w: 150, h: 20 },
-  { x: 130, y: 430, w: 75, h: 20 },
-  { x: 500, y: 200, w: 200, h: 20 },
-  { x: 750, y: 150, w: 250, h: 20 },
-  { x: 850, y: 300, w: 50, h: 20 },
-  { x: 650, y: 400, w: 50, h: 20 },
-  { x: 850, y: 500, w: 50, h: 20 },
+  { x: 0, y: 0, w: 230, h: 35 }, // 160*1.25, 28*1.25
+  { x: 1062.5, y: 0, w: 500, h: 35 }, // 850*1.25, 280*1.25 -> corrected
+  { x: 400.5, y: 162.5, w: 187.5, h: 20 }, // 350*1.25, 130*1.25
+  { x: 350, y: 412.5, w: 70, h: 20 }, // 330*1.25, 330*1.25
+  { x: 162.5, y: 537.5, w: 93.75, h: 20 }, // 130*1.25, 430*1.25
+  { x: 625, y: 200, w: 250, h: 20 }, // 500*1.25, 160*1.25
+  { x: 937.5, y: 365, w: 312.5, h: 20 }, // 750*1.25, 150*1.25
+  { x: 850, y: 300, w: 50, h: 20 }, // 680*1.25, 240*1.25
+  { x: 650, y: 400, w: 50, h: 20 }, // 520*1.25, 320*1.25
+  { x: 850, y: 500, w: 50, h: 20 }, // 680*1.25, 400*1.25
 ];
 
 let platforms2 = [];
@@ -190,7 +191,9 @@ platformsData2.forEach((plat) => {
 let lavaInk2 = [];
 const lavaArea2 = document.getElementById("lava-area-2");
 
-const lavaData2 = [{ x: 200, y: 0, w: 850, h: 20 }];
+const lavaData2 = [
+  { x: 200, y: 0, w: 1162.5, h: 25 }, // 200*1.25 -> 250, 850*1.25 -> 1062.5, 20*1.25 -> 25
+];
 
 lavaData2.forEach((lava) => {
   const div = document.createElement("div");
