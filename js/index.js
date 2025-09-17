@@ -11,9 +11,12 @@ const timerEl = document.getElementById("timer");
 startBtn.addEventListener("click", () => {
   startScreen.style.display = "none";
   winScreen.style.display = "none";
+  lostScreen.style.display = "none";
   firstLevel.style.display = "block";
 
   resetPlayer();
+  resetTimer();
+  startTimer();
 });
 
 restartBtn.addEventListener("click", () => {
@@ -23,6 +26,24 @@ restartBtn.addEventListener("click", () => {
 
   resetPlayer();
 });
+
+lostRestartBtn.addEventListener("click", () => {
+  lostScreen.style.display = "none";
+  startScreen.style.display = "block";
+
+  currentLevel = 1;
+
+  resetPlayer();
+  resetTimer();
+  resetTimer2();
+});
+
+const playerEl2 = document.getElementById("player-2");
+playerEl2.style.width = player2.w + "px"; // matches player2.w = 60
+playerEl2.style.height = player2.h + "px"; // matches player2.h = 80
+playerEl2.style.position = "absolute";
+playerEl2.style.left = player2.x + "px";
+playerEl2.style.bottom = player2.y + "px";
 
 function resetPlayer() {
   let playerEl =
@@ -101,21 +122,6 @@ function toggleSound(isOn) {
 
 soundOnBtn.addEventListener("click", () => toggleSound(true));
 soundOffBtn.addEventListener("click", () => toggleSound(false));
-
-// ---------------- Hook Sound to Start ----------------
-startBtn.addEventListener("click", () => {
-  startScreen.style.display = "none";
-  winScreen.style.display = "none";
-  firstLevel.style.display = "block";
-
-  resetPlayer();
-  resetTimer();
-  startTimer();
-
-  bgAudio.play().catch(() => {
-    console.log("Autoplay blocked, user interaction required.");
-  });
-});
 
 // ---------------- Timer Setup ----------------
 let startTime = 0;
@@ -196,30 +202,16 @@ function updateTimer2() {
   timerEl2.textContent = `${mm}:${ss}:${ms}`;
 
   if (elapsed >= maxTimeInMs2) {
+    clearInterval(timerInterval2);
+    timerInterval2 = null;
+
     timeUpLevel2();
   }
 }
 
 function timeUpLevel2() {
   stopTimer2();
-  secondLevel.style.display = "none";
+  const secondLevelEl = document.getElementById("second-level");
+  secondLevelEl.style.display = "none";
   lostScreen.style.display = "block";
 }
-
-// ---------------- Button Event Listeners ----------------
-
-startBtn.addEventListener("click", () => {
-  startScreen.style.display = "none";
-  firstLevel.style.display = "block";
-  lostScreen.style.display = "none";
-
-  resetTimer();
-  startTimer();
-});
-
-lostRestartBtn.addEventListener("click", () => {
-  lostScreen.style.display = "none";
-  startScreen.style.display = "block";
-
-  resetTimer();
-});

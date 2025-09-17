@@ -318,3 +318,8 @@ body {
   color: rgb(199, 198, 198);
   bottom: -95px;
 }
+
+#player-2 {
+  width: auto;
+  height: auto;
+}

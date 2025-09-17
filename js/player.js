@@ -317,7 +317,6 @@ function applyEnemyPhysics() {
       const overlapBottom = Math.abs(enemyTop - plat.y);
 
       if (overlapTop < overlapBottom) {
-        // ✅ enemy lands on top of platform
         enemy.y = platTop;
         enemy.vy = 0;
         enemy.onGround = true;
@@ -506,6 +505,26 @@ function checkLavaCollision() {
   });
 }
 
+function checkLavaCollision2() {
+  lavaInk2.forEach((lava) => {
+    const horizontal =
+      player2.x + player2.w > lava.x && player2.x < lava.x + lava.w;
+    const vertical =
+      player2.y + player2.h > lava.y && player2.y < lava.y + lava.h;
+
+    if (horizontal && vertical) {
+      // Reset player2 to start
+      const firstPlat = platforms2[0];
+      player2.x = firstPlat.x + 10;
+      player2.y = firstPlat.y + firstPlat.h;
+      player2.vx = 0;
+      player2.vy = 0;
+      player2.jumping = false;
+      player2.onGround = true;
+    }
+  });
+}
+
 // ---- EXIT COLLISION ----
 const exitEl = document.getElementById("exit");
 
@@ -556,19 +575,17 @@ function checkExitCollision2() {
     playerBox.y + playerBox.h > exit.y && playerBox.y < exit.y + exit.h;
 
   if (horizontal && vertical) {
-    levelComplete();
+    level2Complete();
   }
 }
 
 function levelComplete() {
   if (currentLevel === 1) {
-    // Hide level 1, show level 2
     document.getElementById("first-level").style.display = "none";
     document.getElementById("second-level").style.display = "block";
 
     currentLevel = 2;
 
-    // Reset player2
     const firstPlat = platforms2[0];
     player2.x = firstPlat.x + 10;
     player2.y = firstPlat.y + firstPlat.h;
@@ -588,6 +605,13 @@ function levelComplete() {
     winScreen.style.display = "block";
     stopTimer2();
   }
+}
+
+function level2Complete() {
+  document.getElementById("second-level").style.display = "none";
+  document.getElementById("win-screen").style.display = "block";
+
+  stopTimer2(); // stop level 2 timer
 }
 
 // ---------------- Game Loop ----------------
@@ -646,12 +670,16 @@ function updatePlayer2() {
   checkExitCollision2();
 
   const playerEl2 = document.getElementById("player-2");
+
+  // ✅ Force the DOM element to match the physics box
   playerEl2.style.left = player2.x + "px";
   playerEl2.style.bottom = player2.y + "px";
+  playerEl2.style.width = player2.w + "px";
+  playerEl2.style.height = player2.h + "px";
+  playerEl2.style.position = "absolute";
 
   requestAnimationFrame(updatePlayer2);
 }
-
 // ---------------- Power-up Collision ----------------
 function checkPowerUpCollision() {
   powerUps.forEach((pu) => {
