@@ -1,3 +1,10 @@
+#game-container {
+  width: 1280px; /* base resolution */
+  height: 720px; /* base resolution */
+  transform-origin: top left;
+  transform: scale(calc(100vw / 1280));
+}
+
 body {
   padding: 0;
   margin: 0;
