@@ -8,104 +8,102 @@
     <title>Get Out of The Paper</title>
   </head>
   <body>
-    <div id="game-container">
-      <main>
-        <!-- Start Screen -->
-        <div id="start-screen">
-          <h1 id="game-title-str">Get out of The Paper</h1>
+    <main>
+      <!-- Start Screen -->
+      <div id="start-screen">
+        <h1 id="game-title-str">Get out of The Paper</h1>
+        <img
+          id="start-screen-logo"
+          src="imgs/logo game project (1) (1).png"
+          alt="Logo"
+        />
+        <br />
+        <button id="start-btn">Start!</button>
+        <p id="instructions">
+          Use <img id="wasd" src="imgs/wasd.png" alt="WASD" /> or
+          <img id="arrows" src="imgs/arrows.png" alt="Arrows" /> and
+          <img id="space-bar" src="imgs/space-bar.png" alt="Spacebar" /> to
+          control your character!
+        </p>
+        <div id="sound-btn">
+          <button id="sound-on">
+            <img src="imgs/sound-on.png" alt="" />
+          </button>
+          <button id="sound-off">
+            <img src="imgs/sound-off.png" alt="" />
+          </button>
+        </div>
+      </div>
+      <!-- First Level -->
+      <div id="first-level">
+        <div class="stats">
+          <h2 id="game-timer">Time: <span id="timer">00:00:00</span></h2>
+          <h2 id="time-limit">Time Limit: <span>00:20:00</span></h2>
+        </div>
+        <!-- Game Screen -->
+        <div id="game-screen">
           <img
-            id="start-screen-logo"
-            src="imgs/logo game project (1) (1).png"
-            alt="Logo"
+            id="exit"
+            src="imgs/exit_the_paper-removebg-preview.png"
+            alt="Exit"
           />
-          <br />
-          <button id="start-btn">Start!</button>
-          <p id="instructions">
-            Use <img id="wasd" src="imgs/wasd.png" alt="WASD" /> or
-            <img id="arrows" src="imgs/arrows.png" alt="Arrows" /> and
-            <img id="space-bar" src="imgs/space-bar.png" alt="Spacebar" /> to
-            control your character!
-          </p>
-          <div id="sound-btn">
-            <button id="sound-on">
-              <img src="imgs/sound-on.png" alt="" />
-            </button>
-            <button id="sound-off">
-              <img src="imgs/sound-off.png" alt="" />
-            </button>
-          </div>
+          <div id="ground-area"></div>
+          <div id="lava-area"></div>
+          <img id="player" src="imgs/char1.png" alt="Player" />
         </div>
-        <!-- First Level -->
-        <div id="first-level">
-          <div class="stats">
-            <h2 id="game-timer">Time: <span id="timer">00:00:00</span></h2>
-            <h2 id="time-limit">Time Limit: <span>00:20:00</span></h2>
-          </div>
-          <!-- Game Screen -->
-          <div id="game-screen">
-            <img
-              id="exit"
-              src="imgs/exit_the_paper-removebg-preview.png"
-              alt="Exit"
-            />
-            <div id="ground-area"></div>
-            <div id="lava-area"></div>
-            <img id="player" src="imgs/char1.png" alt="Player" />
-          </div>
-        </div>
+      </div>
 
-        <!-- Second Level -->
-        <div id="second-level">
-          <div class="stats">
-            <h2 id="game-timer-2">Time: <span id="timer-2">00:00:00</span></h2>
-            <h2 id="time-limit-2">
-              Time Limit: <span id="timer-2">00:20:00</span>
-            </h2>
-          </div>
-          <div id="game-screen-2">
-            <img
-              id="exit-2"
-              src="imgs/exit_the_paper-removebg-preview.png"
-              alt="Exit"
-            />
-            <div id="ground-area-2"></div>
-            <div id="lava-area-2"></div>
-            <img id="player-2" src="imgs/char1.png" alt="Player" />
-          </div>
+      <!-- Second Level -->
+      <div id="second-level">
+        <div class="stats">
+          <h2 id="game-timer-2">Time: <span id="timer-2">00:00:00</span></h2>
+          <h2 id="time-limit-2">
+            Time Limit: <span id="timer-2">00:20:00</span>
+          </h2>
         </div>
+        <div id="game-screen-2">
+          <img
+            id="exit-2"
+            src="imgs/exit_the_paper-removebg-preview.png"
+            alt="Exit"
+          />
+          <div id="ground-area-2"></div>
+          <div id="lava-area-2"></div>
+          <img id="player-2" src="imgs/char1.png" alt="Player" />
+        </div>
+      </div>
 
-        <!-- Win Screen -->
-        <div id="win-screen">
-          <img
-            id="win-src-logo"
-            src="imgs/logo game project (1) (1).png"
-            alt="Win Logo"
-          />
-          <h1>You Have Made It Out of The Paper!!!</h1>
-          <br />
-          <button id="restart-btn">Get a Better Time!</button>
-          <p id="better-time-win">
-            Congrats for finishing the first level feel free to try to beat your
-            best time!
-          </p>
-        </div>
-        <!-- Lost Screen -->
-        <div id="lost-screen">
-          <img
-            id="loss-src-logo"
-            src="imgs/logo game project (1) (1).png"
-            alt="Lose Logo"
-          />
-          <h1>You Didn't Make It Out of The Paper</h1>
-          <br />
-          <button id="restart-btn-lost">Try Again!</button>
-          <p id="object-to-win">
-            If you want to Get out Of the Paper you need to arrive at the exit
-            before the timer arrives at the limit!
-          </p>
-        </div>
-      </main>
-    </div>
+      <!-- Win Screen -->
+      <div id="win-screen">
+        <img
+          id="win-src-logo"
+          src="imgs/logo game project (1) (1).png"
+          alt="Win Logo"
+        />
+        <h1>You Have Made It Out of The Paper!!!</h1>
+        <br />
+        <button id="restart-btn">Get a Better Time!</button>
+        <p id="better-time-win">
+          Congrats for finishing the first level feel free to try to beat your
+          best time!
+        </p>
+      </div>
+      <!-- Lost Screen -->
+      <div id="lost-screen">
+        <img
+          id="loss-src-logo"
+          src="imgs/logo game project (1) (1).png"
+          alt="Lose Logo"
+        />
+        <h1>You Didn't Make It Out of The Paper</h1>
+        <br />
+        <button id="restart-btn-lost">Try Again!</button>
+        <p id="object-to-win">
+          If you want to Get out Of the Paper you need to arrive at the exit
+          before the timer arrives at the limit!
+        </p>
+      </div>
+    </main>
     <!-- Scripts -->
     <script src="js/index.js"></script>
     <script src="js/player.js"></script>

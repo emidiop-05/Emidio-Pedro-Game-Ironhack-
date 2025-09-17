@@ -8,17 +8,6 @@ const playerEl = document.getElementById("player");
 const lostRestartBtn = document.getElementById("restart-btn-lost");
 const timerEl = document.getElementById("timer");
 
-function scaleGame() {
-  const container = document.getElementById("game-container");
-  const scaleX = window.innerWidth / 1280;
-  const scaleY = window.innerHeight / 720;
-  const scale = Math.min(scaleX, scaleY);
-  container.style.transform = `scale(${scale})`;
-}
-
-window.addEventListener("resize", scaleGame);
-window.addEventListener("load", scaleGame);
-
 startBtn.addEventListener("click", () => {
   startScreen.style.display = "none";
   winScreen.style.display = "none";

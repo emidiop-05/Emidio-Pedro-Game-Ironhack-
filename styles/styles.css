@@ -1,23 +1,10 @@
-html,
 body {
   padding: 0;
   margin: 0;
-  height: 100%;
-  width: 100%;
 }
 
-#game-container {
-  width: 1280px; /* fixed game width */
-  height: 720px; /* fixed game height */
-  margin: 0 auto; /* center horizontally */
-  transform-origin: top left;
-}
-
-body {
-  overflow: hidden; /* optional: prevent scrollbars */
-}
 #start-screen {
-  padding: 20px 0;
+  padding: 2.7vh 0;
   background-image: url("../imgs/background-scenario.png");
   background-size: cover;
   background-position: center;
@@ -25,93 +12,104 @@ body {
   width: 100vw;
   height: 100vh;
 }
+
 #start-btn {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 74%;
-  height: 65px;
-  width: 165px;
+  top: 74vh;
+  height: 8.5vh;
+  width: 21vw;
   background-color: lightblue;
-  border-radius: 10px;
+  border-radius: 1.3vh;
   font-weight: bold;
   transition: background-color 0.2s ease, font-size 0.6s ease, width 0.6s ease,
     height 0.6s ease;
 }
+
 #start-btn:hover {
   background-color: white;
-  font-size: 30px;
-  height: 75px;
-  width: 175px;
+  font-size: 3.8vh;
+  height: 9.8vh;
+  width: 22vw;
 }
+
 #start-screen-logo {
   position: relative;
   top: 0;
   display: block;
   margin: 0 auto;
-  height: 400px;
+  height: 70vh;
   z-index: 1;
 }
 
 #game-title-str {
   position: absolute;
-  top: 143px;
+  top: 25vh;
   left: 50%;
   transform: translateX(-50%);
-  height: 150px;
+  height: 20vh;
   z-index: 2;
-  font-size: 50px;
+  font-size: 8.5vh;
 }
+
 #sound-btn {
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 20px;
-  left: 50px;
-  gap: 5px;
+  top: 2.7vh;
+  left: 2.5vw;
+  gap: 0.7vh;
 }
+
 #sound-btn button {
-  height: 30px;
-  width: 30px;
+  height: 6vh;
+  width: 6vw;
   padding: 0;
   border: none;
   background: transparent;
   cursor: pointer;
 }
+
 #sound-btn button img {
   height: 100%;
   width: 100%;
   object-fit: contain;
   display: block;
 }
+
 #sound-btn button.active {
   background-color: lightblue;
-  border-radius: 5px;
+  border-radius: 0.7vh;
 }
+
 #controls {
   position: absolute;
-  top: 580px;
+  top: 77vh;
   left: 50%;
   transform: translateX(-50%);
-  height: 150px;
+  height: 21vh;
   z-index: 2;
-  font-size: 20px;
+  font-size: 2.5vh;
 }
+
 #wasd,
 #arrows,
 #space-bar {
-  width: 50px;
+  width: 6.9vw;
   height: auto;
   vertical-align: middle;
 }
+
 #instructions {
   position: absolute;
-  top: 450px;
+  top: 61vh;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
-  font-size: 20px;
+  font-size: 2.5vh;
 }
+
 #first-level {
   position: relative;
   background-image: url("../imgs/background-scenario.png");
@@ -124,27 +122,31 @@ body {
   padding: 0;
   margin: 0;
 }
+
 #game-timer {
   position: relative;
-  left: 20px;
+  left: 2.7vw;
 }
+
 #time-limit {
   position: relative;
 }
+
 .stats {
   position: absolute;
-  top: 10px;
+  top: 1.4vh;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   justify-content: space-between;
   width: 80%;
-  font-size: 20px;
+  font-size: 2.5vh;
   color: white;
   font-weight: bold;
-  text-shadow: 1px 1px 2px black;
+  text-shadow: 0.15vw 0.15vh 0.3vh black;
   z-index: 10;
 }
+
 #game-screen {
   position: relative;
   width: 100%;
@@ -153,26 +155,28 @@ body {
 }
 
 .power-up {
-  width: 180px;
-  height: 180px;
+  width: 24vw;
+  height: 24vh;
   z-index: 4;
 }
 
 #exit {
   position: absolute;
-  bottom: 50px;
+  bottom: 6.9vh;
   right: 0;
-  width: 150px;
+  width: 20vw;
   height: auto;
   z-index: 2;
 }
+
 .platform {
   position: absolute;
   background-color: rgb(204, 3, 3);
   z-index: 1;
-  border-radius: 5px;
-  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 0.7vh;
+  box-shadow: 0.4vw 0.4vh 0.7vh rgba(0, 0, 0, 0.3);
 }
+
 .lava-ink {
   position: absolute;
   background-image: url("../imgs/ink-lava.png");
@@ -180,12 +184,13 @@ body {
   background-repeat: no-repeat;
   z-index: 0;
 }
+
 #player {
   position: absolute;
-  width: 65px;
-  height: 100px;
+  width: 5vw;
+  height: 13.9vh;
   bottom: 0;
-  left: 100px;
+  left: 13.9vw;
   z-index: 3;
   padding: 0;
   margin: 0;
@@ -207,29 +212,30 @@ body {
 
 #second-level .stats {
   position: absolute;
-  top: 10px;
+  top: 1.4vh;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   justify-content: space-between;
   width: 80%;
-  font-size: 20px;
+  font-size: 2.5vh;
   color: white;
   font-weight: bold;
-  text-shadow: 1px 1px 2px black;
+  text-shadow: 0.15vw 0.15vh 0.3vh black;
   z-index: 10;
 }
 
 #exit-2 {
   position: absolute;
-  top: 50px;
+  top: 6.9vh;
   right: 0;
-  width: 150px;
+  width: 20vw;
   height: auto;
   z-index: 2;
 }
+
 #win-screen {
-  padding: 20px 0;
+  padding: 2.7vh 0;
   background-image: url("../imgs/background-scenario.png");
   background-size: cover;
   background-position: center;
@@ -238,37 +244,41 @@ body {
   height: 100vh;
   display: none;
 }
+
 #win-screen h1 {
   position: relative;
   margin: 0 auto;
   text-align: center;
   color: rgb(0, 170, 186);
 }
+
 #win-src-logo {
   position: relative;
   top: 0;
   display: block;
   margin: 0 auto;
-  height: 300px;
+  height: 41.6vh;
   z-index: 1;
-  left: 30px;
+  left: 4vw;
 }
+
 #restart-btn {
   position: absolute;
-  right: 500px;
-  height: 65px;
-  width: 165px;
+  right: 39vw;
+  height: 8.5vh;
+  width: 21vw;
   background-color: lightblue;
-  border-radius: 10px;
+  border-radius: 1.3vh;
   font-weight: bold;
   transition: background-color 0.2s ease, font-size 0.6s ease, width 0.6s ease,
     height 0.6s ease;
 }
+
 #restart-btn:hover {
   background-color: white;
-  font-size: 20px;
-  height: 75px;
-  width: 175px;
+  font-size: 2.7vh;
+  height: 10vh;
+  width: 22vw;
 }
 
 #better-time-win {
@@ -276,10 +286,11 @@ body {
   margin: 0 auto;
   text-align: center;
   color: rgb(198, 199, 199);
-  bottom: -95px;
+  bottom: -13vh;
 }
+
 #lost-screen {
-  padding: 20px 0;
+  padding: 2.7vh 0;
   background-image: url("../imgs/background-scenario.png");
   background-size: cover;
   background-position: center;
@@ -294,18 +305,18 @@ body {
   top: 0;
   display: block;
   margin: 0 auto;
-  height: 300px;
+  height: 41.6vh;
   z-index: 1;
-  left: 30px;
+  left: 4vw;
 }
 
 #restart-btn-lost {
   position: absolute;
-  right: 500px;
-  height: 65px;
-  width: 165px;
+  right: 39vw;
+  height: 8.5vh;
+  width: 21vw;
   background-color: rgb(244, 117, 117);
-  border-radius: 10px;
+  border-radius: 1.3vh;
   font-weight: bold;
   transition: background-color 0.2s ease, font-size 0.6s ease, width 0.6s ease,
     height 0.6s ease;
@@ -313,9 +324,9 @@ body {
 
 #restart-btn-lost:hover {
   background-color: white;
-  font-size: 20px;
-  height: 75px;
-  width: 175px;
+  font-size: 2.7vh;
+  height: 10vh;
+  width: 22vw;
 }
 
 #lost-screen h1 {
@@ -330,7 +341,7 @@ body {
   margin: 0 auto;
   text-align: center;
   color: rgb(199, 198, 198);
-  bottom: -95px;
+  bottom: -13vh;
 }
 
 #player-2 {
