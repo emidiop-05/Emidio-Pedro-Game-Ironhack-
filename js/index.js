@@ -21,10 +21,12 @@ startBtn.addEventListener("click", () => {
 
 restartBtn.addEventListener("click", () => {
   winScreen.style.display = "none";
-  firstLevel.style.display = "none";
   startScreen.style.display = "block";
 
+  currentLevel = 1;
   resetPlayer();
+  resetTimer();
+  resetTimer2();
 });
 
 lostRestartBtn.addEventListener("click", () => {
@@ -32,15 +34,15 @@ lostRestartBtn.addEventListener("click", () => {
   startScreen.style.display = "block";
 
   currentLevel = 1;
-
   resetPlayer();
+  resetPlayer2();
   resetTimer();
   resetTimer2();
 });
 
 const playerEl2 = document.getElementById("player-2");
-playerEl2.style.width = player2.w + "px"; // matches player2.w = 60
-playerEl2.style.height = player2.h + "px"; // matches player2.h = 80
+playerEl2.style.width = player2.w + "px";
+playerEl2.style.height = player2.h + "px";
 playerEl2.style.position = "absolute";
 playerEl2.style.left = player2.x + "px";
 playerEl2.style.bottom = player2.y + "px";
