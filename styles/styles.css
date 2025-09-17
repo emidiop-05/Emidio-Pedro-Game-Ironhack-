@@ -207,7 +207,6 @@ body {
   overflow: hidden;
   padding: 0;
   margin: 0;
-  display: none;
 }
 
 #second-level .stats {
@@ -242,7 +241,6 @@ body {
   background-repeat: no-repeat;
   width: 100vw;
   height: 100vh;
-  display: none;
 }
 
 #win-screen h1 {
@@ -297,7 +295,6 @@ body {
   background-repeat: no-repeat;
   width: 100vw;
   height: 100vh;
-  display: none;
 }
 
 #loss-src-logo {
