@@ -1,13 +1,20 @@
-#game-container {
-  width: 1280px; /* base resolution */
-  height: 720px; /* base resolution */
-  transform-origin: top left;
-  transform: scale(calc(100vw / 1280));
-}
-
+html,
 body {
   padding: 0;
   margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#game-container {
+  width: 1280px; /* fixed game width */
+  height: 720px; /* fixed game height */
+  margin: 0 auto; /* center horizontally */
+  transform-origin: top left;
+}
+
+body {
+  overflow: hidden; /* optional: prevent scrollbars */
 }
 #start-screen {
   padding: 20px 0;
