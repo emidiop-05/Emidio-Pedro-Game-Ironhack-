@@ -25,10 +25,13 @@ restartBtn.addEventListener("click", () => {
 });
 
 function resetPlayer() {
-  const playerEl = document.getElementById("player");
+  let playerEl =
+    currentLevel === 1
+      ? document.getElementById("player")
+      : document.getElementById("player-2");
 
   player.x = 100;
-  player.y = 0;
+  player.y = 35;
   player.vx = 0;
   player.vy = 0;
   player.jumping = false;
@@ -156,6 +159,50 @@ function updateTimer() {
 function timeUp() {
   stopTimer();
   firstLevel.style.display = "none";
+  lostScreen.style.display = "block";
+}
+
+let startTime2 = 0;
+let timerInterval2 = null;
+const maxTimeInMs2 = 60 * 125; // 20 minutes for level 2
+
+const timerEl2 = document.getElementById("timer-2");
+
+function startTimer2() {
+  startTime2 = Date.now();
+  timerInterval2 = setInterval(updateTimer2, 10);
+}
+
+function stopTimer2() {
+  clearInterval(timerInterval2);
+  timerInterval2 = null;
+}
+
+function resetTimer2() {
+  stopTimer2();
+  timerEl2.textContent = "00:00:00";
+}
+
+function updateTimer2() {
+  const elapsed = Date.now() - startTime2;
+  const minutes = Math.floor(elapsed / 60000);
+  const seconds = Math.floor((elapsed % 60000) / 1000);
+  const milliseconds = Math.floor((elapsed % 1000) / 10);
+
+  const mm = String(minutes).padStart(2, "0");
+  const ss = String(seconds).padStart(2, "0");
+  const ms = String(milliseconds).padStart(2, "0");
+
+  timerEl2.textContent = `${mm}:${ss}:${ms}`;
+
+  if (elapsed >= maxTimeInMs2) {
+    timeUpLevel2();
+  }
+}
+
+function timeUpLevel2() {
+  stopTimer2();
+  secondLevel.style.display = "none";
   lostScreen.style.display = "block";
 }
 

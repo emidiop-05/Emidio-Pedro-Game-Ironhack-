@@ -1,7 +1,7 @@
 // ---------------- Player Setup ----------------
 const player = {
   x: 100,
-  y: 100,
+  y: 80,
   w: 60,
   h: 80,
   vx: 0,
@@ -12,6 +12,21 @@ const player = {
   onGround: false,
   canShoot: false,
 };
+
+const player2 = {
+  x: 100,
+  y: 35,
+  w: 60,
+  h: 80,
+  vx: 0,
+  vy: 0,
+  speed: 4,
+  jumpPower: 12,
+  jumping: false,
+  onGround: true,
+  canShoot: false,
+};
+
 // ---------------- Enemy Setup ----------------
 const enemy = {
   x: 400,
@@ -19,6 +34,8 @@ const enemy = {
   w: 60,
   h: 80,
   vx: 2,
+  vy: 0,
+  onGround: false,
   direction: 1,
   el: null,
 };
@@ -33,6 +50,10 @@ const powerUps = [
     el: null,
   },
 ];
+let currentLevel = 1;
+// ---------------- Physics ----------------
+const gravity = 0.5;
+const GROUND_TOLERANCE = 4;
 
 let projectiles = [];
 function updateProjectiles() {
@@ -71,6 +92,8 @@ const gameWidth = gameArea.offsetWidth;
 // ---------------- Platforms ----------------
 const platformsData = [
   { x: 0, y: 0, w: 400, h: 35 },
+  { x: 850, y: 0, w: 300, h: 35 },
+  { x: 1100, y: 0, w: 60, h: 90 },
   { x: 350, y: 130, w: 150, h: 20 },
   { x: 330, y: 330, w: 150, h: 20 },
   { x: 130, y: 430, w: 75, h: 20 },
@@ -135,6 +158,59 @@ powerUps.forEach((pu) => {
   pu.el = div;
 });
 
+// ---------------- Level 2 Platforms ----------------
+const platformsData2 = [
+  { x: 0, y: 0, w: 200, h: 35 },
+  { x: 850, y: 0, w: 400, h: 35 },
+  { x: 350, y: 130, w: 150, h: 20 },
+  { x: 330, y: 330, w: 150, h: 20 },
+  { x: 130, y: 430, w: 75, h: 20 },
+  { x: 500, y: 200, w: 200, h: 20 },
+  { x: 750, y: 150, w: 250, h: 20 },
+  { x: 850, y: 300, w: 50, h: 20 },
+  { x: 650, y: 400, w: 50, h: 20 },
+  { x: 850, y: 500, w: 50, h: 20 },
+];
+
+let platforms2 = [];
+const groundArea2 = document.getElementById("ground-area-2");
+
+platformsData2.forEach((plat) => {
+  const div = document.createElement("div");
+  div.classList.add("platform");
+  div.style.left = plat.x + "px";
+  div.style.bottom = plat.y + "px";
+  div.style.width = plat.w + "px";
+  div.style.height = plat.h + "px";
+  groundArea2.appendChild(div);
+  platforms2.push(plat);
+});
+
+// ---------------- Level 2 Lava ----------------
+let lavaInk2 = [];
+const lavaArea2 = document.getElementById("lava-area-2");
+
+const lavaData2 = [{ x: 200, y: 0, w: 850, h: 20 }];
+
+lavaData2.forEach((lava) => {
+  const div = document.createElement("div");
+  div.classList.add("lava-ink");
+  div.style.left = lava.x + "px";
+  div.style.bottom = lava.y + "px";
+  div.style.width = lava.w + "px";
+  div.style.height = lava.h + "px";
+
+  lavaArea2.appendChild(div);
+
+  lavaInk2.push({
+    el: div,
+    x: lava.x,
+    y: lava.y,
+    w: lava.w,
+    h: lava.h,
+  });
+});
+
 // ---------------- Enemy DOM ----------------
 const enemyEl = document.createElement("div");
 enemyEl.id = "enemy";
@@ -153,17 +229,25 @@ gameArea.appendChild(enemyEl);
 enemy.el = enemyEl;
 // ---------------- Enemy Movement ----------------
 function updateEnemy() {
+  // Horizontal movement
   enemy.x += enemy.vx * enemy.direction;
 
+  // Randomly change direction
   if (Math.random() < 0.01) {
     enemy.direction *= -1;
   }
 
+  // Stay inside game width
   if (enemy.x <= 0) enemy.direction = 1;
   if (enemy.x + enemy.w >= gameWidth) enemy.direction = -1;
 
-  enemy.el.style.left = enemy.x + "px";
+  applyEnemyPhysics();
 
+  // Update DOM
+  enemy.el.style.left = enemy.x + "px";
+  enemy.el.style.bottom = enemy.y + "px";
+
+  // Check collision with player
   checkEnemyCollision();
 
   requestAnimationFrame(updateEnemy);
@@ -205,6 +289,49 @@ function checkEnemyCollision() {
     playerEl.style.bottom = player.y + "px";
   }
 }
+function applyEnemyPhysics() {
+  enemy.onGround = false;
+
+  // Apply gravity
+  enemy.vy -= gravity;
+  enemy.y += enemy.vy;
+
+  // Platform collisions
+  platforms.forEach((plat) => {
+    const platTop = plat.y + plat.h;
+    const platLeft = plat.x;
+    const platRight = plat.x + plat.w;
+
+    const enemyBottom = enemy.y;
+    const enemyTop = enemy.y + enemy.h;
+    const enemyLeft = enemy.x;
+    const enemyRight = enemy.x + enemy.w;
+
+    if (
+      enemyRight > platLeft &&
+      enemyLeft < platRight &&
+      enemyTop > plat.y &&
+      enemyBottom < platTop
+    ) {
+      const overlapTop = Math.abs(enemyBottom - platTop);
+      const overlapBottom = Math.abs(enemyTop - plat.y);
+
+      if (overlapTop < overlapBottom) {
+        // ✅ enemy lands on top of platform
+        enemy.y = platTop;
+        enemy.vy = 0;
+        enemy.onGround = true;
+      }
+    }
+  });
+
+  // Ground collision
+  if (enemy.y <= 0) {
+    enemy.y = 0;
+    enemy.vy = 0;
+    enemy.onGround = true;
+  }
+}
 
 updateEnemy();
 // ---------------- Controls ----------------
@@ -238,10 +365,6 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keyup", (e) => {
   if (keys.hasOwnProperty(e.key)) keys[e.key] = false;
 });
-
-// ---------------- Physics ----------------
-const gravity = 0.5;
-const GROUND_TOLERANCE = 5;
 
 // ---------------- Collision Function ----------------
 function checkPlatformCollision() {
@@ -305,6 +428,67 @@ function checkPlatformCollision() {
   }
 }
 
+function checkPlatformCollision2() {
+  player2.onGround = false;
+
+  const nextX = player2.x + player2.vx;
+  const nextY = player2.y + player2.vy;
+
+  platforms2.forEach((plat) => {
+    const platTop = plat.y + plat.h;
+    const platBottom = plat.y;
+    const platLeft = plat.x;
+    const platRight = plat.x + plat.w;
+
+    const playerBottom = nextY;
+    const playerTop = nextY + player2.h;
+    const playerLeft = nextX;
+    const playerRight = nextX + player2.w;
+
+    if (
+      playerRight > platLeft &&
+      playerLeft < platRight &&
+      playerTop > platBottom &&
+      playerBottom < platTop
+    ) {
+      const overlapTop = Math.abs(playerBottom - platTop);
+      const overlapBottom = Math.abs(playerTop - platBottom);
+      const overlapLeft = Math.abs(playerRight - platLeft);
+      const overlapRight = Math.abs(playerLeft - platRight);
+
+      const minOverlap = Math.min(
+        overlapTop,
+        overlapBottom,
+        overlapLeft,
+        overlapRight
+      );
+
+      if (minOverlap === overlapTop) {
+        player2.y = platTop;
+        player2.vy = 0;
+        player2.onGround = true;
+        player2.jumping = false;
+      } else if (minOverlap === overlapBottom) {
+        player2.y = platBottom - player2.h;
+        player2.vy = 0;
+      } else if (minOverlap === overlapLeft) {
+        player2.x = platLeft - player2.w;
+        player2.vx = 0;
+      } else if (minOverlap === overlapRight) {
+        player2.x = platRight;
+        player2.vx = 0;
+      }
+    }
+  });
+
+  if (player2.y <= 0) {
+    player2.y = 0;
+    player2.vy = 0;
+    player2.onGround = true;
+    player2.jumping = false;
+  }
+}
+
 function checkLavaCollision() {
   lavaInk.forEach((lava) => {
     const horizontal =
@@ -350,9 +534,60 @@ function checkExitCollision() {
   }
 }
 
+function checkExitCollision2() {
+  const exitEl2 = document.getElementById("exit-2");
+  const exit = {
+    x: exitEl2.offsetLeft,
+    y: exitEl2.offsetTop,
+    w: exitEl2.offsetWidth,
+    h: exitEl2.offsetHeight,
+  };
+
+  const playerBox = {
+    x: player2.x,
+    y: player2.y,
+    w: player2.w,
+    h: player2.h,
+  };
+
+  const horizontal =
+    playerBox.x + playerBox.w > exit.x && playerBox.x < exit.x + exit.w;
+  const vertical =
+    playerBox.y + playerBox.h > exit.y && playerBox.y < exit.y + exit.h;
+
+  if (horizontal && vertical) {
+    levelComplete();
+  }
+}
+
 function levelComplete() {
-  document.getElementById("first-level").style.display = "none";
-  document.getElementById("win-screen").style.display = "block";
+  if (currentLevel === 1) {
+    // Hide level 1, show level 2
+    document.getElementById("first-level").style.display = "none";
+    document.getElementById("second-level").style.display = "block";
+
+    currentLevel = 2;
+
+    // Reset player2
+    const firstPlat = platforms2[0];
+    player2.x = firstPlat.x + 10;
+    player2.y = firstPlat.y + firstPlat.h;
+    player2.vx = 0;
+    player2.vy = 0;
+    player2.jumping = false;
+    player2.onGround = true;
+
+    const playerEl2 = document.getElementById("player-2");
+    playerEl2.style.left = player2.x + "px";
+    playerEl2.style.bottom = player2.y + "px";
+
+    resetTimer2();
+    startTimer2();
+  } else if (currentLevel === 2) {
+    secondLevel.style.display = "none";
+    winScreen.style.display = "block";
+    stopTimer2();
+  }
 }
 
 // ---------------- Game Loop ----------------
@@ -388,6 +623,33 @@ function updatePlayer() {
   playerEl.style.bottom = player.y + "px";
 
   requestAnimationFrame(updatePlayer);
+}
+
+function updatePlayer2() {
+  player2.vx = 0;
+  if (keys.ArrowLeft || keys.a) player2.vx = -player2.speed;
+  if (keys.ArrowRight || keys.d) player2.vx = player2.speed;
+
+  if (keys[" "] && player2.onGround && !player2.jumping) {
+    player2.vy = player2.jumpPower;
+    player2.jumping = true;
+    player2.onGround = false;
+  }
+
+  if (!player2.onGround) player2.vy -= gravity;
+
+  player2.x += player2.vx;
+  player2.y += player2.vy;
+
+  checkPlatformCollision2();
+  checkLavaCollision2();
+  checkExitCollision2();
+
+  const playerEl2 = document.getElementById("player-2");
+  playerEl2.style.left = player2.x + "px";
+  playerEl2.style.bottom = player2.y + "px";
+
+  requestAnimationFrame(updatePlayer2);
 }
 
 // ---------------- Power-up Collision ----------------
@@ -436,3 +698,4 @@ function shootProjectile() {
 }
 
 updatePlayer();
+updatePlayer2();

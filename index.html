@@ -51,6 +51,26 @@
         </div>
       </div>
 
+      <!-- Second Level -->
+      <div id="second-level">
+        <div class="stats">
+          <h2 id="game-timer-2">Time: <span id="timer-2">00:00:00</span></h2>
+          <h2 id="time-limit-2">
+            Time Limit: <span id="timer-2">00:20:00</span>
+          </h2>
+        </div>
+        <div id="game-screen-2">
+          <img
+            id="exit-2"
+            src="/imgs/exit_the_paper-removebg-preview.png"
+            alt="Exit"
+          />
+          <div id="ground-area-2"></div>
+          <div id="lava-area-2"></div>
+          <img id="player-2" src="/imgs/char1.png" alt="Player" />
+        </div>
+      </div>
+
       <!-- Win Screen -->
       <div id="win-screen">
         <img
@@ -61,6 +81,10 @@
         <h1>You Have Made It Out of The Paper!!!</h1>
         <br />
         <button id="restart-btn">Get a Better Time!</button>
+        <p id="better-time-win">
+          Congrats for finishing the first level feel free to try to beat your
+          best time!
+        </p>
       </div>
       <!-- Lost Screen -->
       <div id="lost-screen">
@@ -72,6 +96,10 @@
         <h1>You Didn't Make It Out of The Paper</h1>
         <br />
         <button id="restart-btn-lost">Try Again!</button>
+        <p id="object-to-win">
+          If you want to Get out Of the Paper you need to arrive at the exit
+          before the timer arrives at the limit!
+        </p>
       </div>
     </main>
     <!-- Scripts -->

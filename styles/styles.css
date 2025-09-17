@@ -1,7 +1,7 @@
 body {
   padding: 0;
   margin: 0;
-} /* -------- Start Screen -------- */
+}
 #start-screen {
   padding: 20px 0;
   background-image: url("../imgs/background-scenario.png");
@@ -38,6 +38,7 @@ body {
   height: 400px;
   z-index: 1;
 }
+
 #game-title-str {
   position: absolute;
   top: 143px;
@@ -96,7 +97,7 @@ body {
   transform: translateX(-50%);
   z-index: 2;
   font-size: 20px;
-} /* -------- Level Wrapper -------- */
+}
 #first-level {
   position: relative;
   background-image: url("/imgs/background-scenario.png");
@@ -115,7 +116,7 @@ body {
 }
 #time-limit {
   position: relative;
-} /* -------- HUD / Stats -------- */
+}
 .stats {
   position: absolute;
   top: 10px;
@@ -129,13 +130,13 @@ body {
   font-weight: bold;
   text-shadow: 1px 1px 2px black;
   z-index: 10;
-} /* -------- Playable Game Screen -------- */
+}
 #game-screen {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
-} /* -------- Exit Goal -------- */
+}
 
 .power-up {
   width: 180px;
@@ -150,7 +151,7 @@ body {
   width: 150px;
   height: auto;
   z-index: 2;
-} /* -------- Platforms / Ground -------- */
+}
 .platform {
   position: absolute;
   background-color: rgb(204, 3, 3);
@@ -164,17 +165,55 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   z-index: 0;
-} /* -------- Player -------- */
+}
 #player {
   position: absolute;
   width: 65px;
   height: 100px;
-  bottom: 0; /* initial bottom overridden by JS */
+  bottom: 0;
   left: 100px;
   z-index: 3;
   padding: 0;
   margin: 0;
-} /* -------- Win / Lose Screens -------- */
+}
+
+#second-level {
+  position: relative;
+  background-image: url("/imgs/background-scenario.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  display: none;
+}
+
+#second-level .stats {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  font-size: 20px;
+  color: white;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px black;
+  z-index: 10;
+}
+
+#exit-2 {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 150px;
+  height: auto;
+  z-index: 2;
+}
 #win-screen {
   padding: 20px 0;
   background-image: url("../imgs/background-scenario.png");
@@ -216,6 +255,14 @@ body {
   font-size: 20px;
   height: 75px;
   width: 175px;
+}
+
+#better-time-win {
+  position: relative;
+  margin: 0 auto;
+  text-align: center;
+  color: rgb(198, 199, 199);
+  bottom: -95px;
 }
 #lost-screen {
   padding: 20px 0;
@@ -262,4 +309,12 @@ body {
   margin: 0 auto;
   text-align: center;
   color: rgb(186, 0, 0);
+}
+
+#object-to-win {
+  position: relative;
+  margin: 0 auto;
+  text-align: center;
+  color: rgb(199, 198, 198);
+  bottom: -95px;
 }
