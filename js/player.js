@@ -601,8 +601,8 @@ function levelComplete() {
     playerEl2.style.left = player2.x + "px";
     playerEl2.style.bottom = player2.y + "px";
 
-    resetTimer2();
-    startTimer2();
+    resetTimer();
+    startTimer();
   } else if (currentLevel === 2) {
     secondLevel.style.display = "none";
     winScreen.style.display = "block";
@@ -668,13 +668,26 @@ function updatePlayer2() {
   player2.x += player2.vx;
   player2.y += player2.vy;
 
+  const gameScreen = document.getElementById("second-level");
+  const maxX = gameScreen.offsetWidth - 65; // player width
+  const maxY = gameScreen.offsetHeight - 100; // player height
+
+  if (player2.x < 0) player2.x = 0;
+  if (player2.x > maxX) player2.x = maxX;
+  if (player2.y < 0) {
+    player2.y = 0;
+    player2.vy = 0;
+    player2.onGround = true;
+    player2.jumping = false;
+  }
+  if (player2.y > maxY) player2.y = maxY;
+
   checkPlatformCollision2();
   checkLavaCollision2();
   checkExitCollision2();
 
   const playerEl2 = document.getElementById("player-2");
 
-  // ✅ Force the DOM element to match the physics box
   playerEl2.style.left = player2.x + "px";
   playerEl2.style.bottom = player2.y + "px";
   playerEl2.style.width = player2.w + "px";
