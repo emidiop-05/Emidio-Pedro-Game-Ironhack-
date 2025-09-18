@@ -1,9 +1,9 @@
 // ---------------- Player Setup ----------------
 const player = {
-  x: 125, // 100 * 1.25
-  y: 100, // 80 * 1.25
-  w: 75, // 60 * 1.25
-  h: 100, // 80 * 1.25
+  x: 125,
+  y: 100,
+  w: 75,
+  h: 100,
   vx: 0,
   vy: 0,
   speed: 4,
@@ -14,10 +14,10 @@ const player = {
 };
 
 const player2 = {
-  x: 125, // 100 * 1.25
-  y: 43.75, // 35 * 1.25
-  w: 75, // 60 * 1.25
-  h: 100, // 80 * 1.25
+  x: 125,
+  y: 100,
+  w: 75,
+  h: 100,
   vx: 0,
   vy: 0,
   speed: 4,
@@ -29,10 +29,10 @@ const player2 = {
 
 // ---------------- Enemy Setup ----------------
 const enemy = {
-  x: 500, // 400 * 1.25
-  y: 187.5, // 150 * 1.25
-  w: 75, // 60 * 1.25
-  h: 100, // 80 * 1.25
+  x: 500,
+  y: 187.5,
+  w: 75,
+  h: 100,
   vx: 2,
   vy: 0,
   onGround: false,
@@ -42,10 +42,10 @@ const enemy = {
 
 const powerUps = [
   {
-    x: 162.5, // 130 * 1.25
-    y: 537.5, // 430 * 1.25
-    w: 100, // 80 * 1.25
-    h: 100, // 80 * 1.25
+    x: 162.5,
+    y: 537.5,
+    w: 100,
+    h: 100,
     collected: false,
     el: null,
   },
@@ -92,7 +92,7 @@ const gameWidth = gameArea.offsetWidth;
 
 // ---------------- Platforms ----------------
 const platformsData = [
-  { x: 0, y: 0, w: 500, h: 43.75 }, // multiplied 1.25
+  { x: 0, y: 0, w: 500, h: 43.75 },
   { x: 1062.5, y: 0, w: 375, h: 43.75 },
   { x: 1375, y: 0, w: 75, h: 112.5 },
   { x: 437.5, y: 162.5, w: 187.5, h: 25 },
@@ -161,16 +161,16 @@ powerUps.forEach((pu) => {
 
 // ---------------- Level 2 Platforms ----------------
 const platformsData2 = [
-  { x: 0, y: 0, w: 230, h: 35 }, // 160*1.25, 28*1.25
-  { x: 1062.5, y: 0, w: 500, h: 35 }, // 850*1.25, 280*1.25 -> corrected
-  { x: 400.5, y: 162.5, w: 187.5, h: 20 }, // 350*1.25, 130*1.25
-  { x: 350, y: 412.5, w: 70, h: 20 }, // 330*1.25, 330*1.25
-  { x: 162.5, y: 537.5, w: 93.75, h: 20 }, // 130*1.25, 430*1.25
-  { x: 625, y: 200, w: 250, h: 20 }, // 500*1.25, 160*1.25
-  { x: 937.5, y: 365, w: 312.5, h: 20 }, // 750*1.25, 150*1.25
-  { x: 850, y: 300, w: 50, h: 20 }, // 680*1.25, 240*1.25
-  { x: 650, y: 400, w: 50, h: 20 }, // 520*1.25, 320*1.25
-  { x: 850, y: 500, w: 50, h: 20 }, // 680*1.25, 400*1.25
+  { x: 0, y: 0, w: 230, h: 35 },
+  { x: 1062.5, y: 0, w: 500, h: 35 },
+  { x: 400.5, y: 162.5, w: 187.5, h: 20 },
+  { x: 350, y: 412.5, w: 70, h: 20 },
+  { x: 162.5, y: 537.5, w: 93.75, h: 20 },
+  { x: 625, y: 200, w: 250, h: 20 },
+  { x: 937.5, y: 365, w: 312.5, h: 20 },
+  { x: 850, y: 300, w: 50, h: 20 },
+  { x: 650, y: 400, w: 50, h: 20 },
+  { x: 850, y: 500, w: 50, h: 20 },
 ];
 
 let platforms2 = [];
@@ -191,9 +191,7 @@ platformsData2.forEach((plat) => {
 let lavaInk2 = [];
 const lavaArea2 = document.getElementById("lava-area-2");
 
-const lavaData2 = [
-  { x: 200, y: 0, w: 1162.5, h: 25 }, // 200*1.25 -> 250, 850*1.25 -> 1062.5, 20*1.25 -> 25
-];
+const lavaData2 = [{ x: 200, y: 0, w: 1162.5, h: 25 }];
 
 lavaData2.forEach((lava) => {
   const div = document.createElement("div");
@@ -232,25 +230,20 @@ gameArea.appendChild(enemyEl);
 enemy.el = enemyEl;
 // ---------------- Enemy Movement ----------------
 function updateEnemy() {
-  // Horizontal movement
   enemy.x += enemy.vx * enemy.direction;
 
-  // Randomly change direction
   if (Math.random() < 0.01) {
     enemy.direction *= -1;
   }
 
-  // Stay inside game width
   if (enemy.x <= 0) enemy.direction = 1;
   if (enemy.x + enemy.w >= gameWidth) enemy.direction = -1;
 
   applyEnemyPhysics();
 
-  // Update DOM
   enemy.el.style.left = enemy.x + "px";
   enemy.el.style.bottom = enemy.y + "px";
 
-  // Check collision with player
   checkEnemyCollision();
 
   requestAnimationFrame(updateEnemy);
@@ -295,11 +288,9 @@ function checkEnemyCollision() {
 function applyEnemyPhysics() {
   enemy.onGround = false;
 
-  // Apply gravity
   enemy.vy -= gravity;
   enemy.y += enemy.vy;
 
-  // Platform collisions
   platforms.forEach((plat) => {
     const platTop = plat.y + plat.h;
     const platLeft = plat.x;
@@ -327,7 +318,6 @@ function applyEnemyPhysics() {
     }
   });
 
-  // Ground collision
   if (enemy.y <= 0) {
     enemy.y = 0;
     enemy.vy = 0;
@@ -353,7 +343,6 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// ---------------- Controls ----------------
 const keys = {
   ArrowLeft: false,
   ArrowRight: false,
@@ -516,7 +505,6 @@ function checkLavaCollision2() {
       player2.y + player2.h > lava.y && player2.y < lava.y + lava.h;
 
     if (horizontal && vertical) {
-      // Reset player2 to start
       const firstPlat = platforms2[0];
       player2.x = firstPlat.x + 10;
       player2.y = firstPlat.y + firstPlat.h;
@@ -614,7 +602,7 @@ function level2Complete() {
   document.getElementById("second-level").style.display = "none";
   document.getElementById("win-screen").style.display = "block";
 
-  stopTimer2(); // stop level 2 timer
+  stopTimer2();
 }
 
 // ---------------- Game Loop ----------------
@@ -669,8 +657,8 @@ function updatePlayer2() {
   player2.y += player2.vy;
 
   const gameScreen = document.getElementById("second-level");
-  const maxX = gameScreen.offsetWidth - 65; // player width
-  const maxY = gameScreen.offsetHeight - 100; // player height
+  const maxX = gameScreen.offsetWidth - 65;
+  const maxY = gameScreen.offsetHeight - 100;
 
   if (player2.x < 0) player2.x = 0;
   if (player2.x > maxX) player2.x = maxX;

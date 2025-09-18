@@ -7,7 +7,7 @@ const firstLevel = document.getElementById("first-level");
 const playerEl = document.getElementById("player");
 const lostRestartBtn = document.getElementById("restart-btn-lost");
 const timerEl = document.getElementById("timer");
-const timerEl2 = document.getElementById("timer-2"); // global reference
+const timerEl2 = document.getElementById("timer-2");
 
 const soundOnBtn = document.getElementById("sound-on");
 const soundOffBtn = document.getElementById("sound-off");
@@ -31,9 +31,8 @@ soundOffBtn.addEventListener("click", () => toggleSound(false));
 // ---------------- Timer Setup ----------------
 let startTime = 0;
 let timerInterval = null;
-const maxTimeInMs = 60 * 335;
+const maxTimeInMs = 60 * 200;
 
-// ---------------- Timer Functions ----------------
 function startTimer() {
   startTime = Date.now();
   timerInterval = setInterval(updateTimer, 10);
@@ -66,7 +65,6 @@ function updateTimer() {
   }
 }
 
-// ---------------- Time Up Function ----------------
 function timeUp() {
   stopTimer();
   firstLevel.style.display = "none";
@@ -75,7 +73,7 @@ function timeUp() {
 
 let startTime2 = 0;
 let timerInterval2 = null;
-const maxTimeInMs2 = 20 * 60 * 1000; // 20 minutes
+const maxTimeInMs2 = 60 * 335; // 20 minutes
 
 function startTimer2() {
   startTime2 = Date.now();
@@ -191,7 +189,7 @@ function resetPlayer() {
   projectiles = [];
 
   if (enemy && enemy.el) {
-    enemy.x = 500; // match initial spawn from player.js
+    enemy.x = 500;
     enemy.y = 187.5;
     enemy.vx = 2;
     enemy.vy = 0;
