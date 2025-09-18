@@ -165,6 +165,23 @@ function checkEnemyCollision2() {
   }
 }
 
+function showPowerUpMessage(text, duration = 2000) {
+  const msg = document.getElementById("powerUpMsg");
+  if (!msg) return;
+
+  const innerP = msg.querySelector("p");
+  if (innerP) innerP.textContent = text;
+  else msg.textContent = text;
+
+  msg.classList.add("show");
+  if (msg._hideTimeout) clearTimeout(msg._hideTimeout);
+
+  msg._hideTimeout = setTimeout(() => {
+    msg.classList.remove("show");
+    msg._hideTimeout = null;
+  }, duration);
+}
+
 const powerUps = [
   {
     x: 162.5,
@@ -784,6 +801,11 @@ function checkPowerUpCollision2() {
       const playerEl2 = document.getElementById("player-2");
       playerEl2.src = "imgs/char-with-powerUp.png";
       player2.canShoot = true;
+
+      showPowerUpMessage(
+        'You have collected Caps shield — press "E" to use it!',
+        2000
+      );
     }
   });
 }
@@ -921,6 +943,11 @@ function checkPowerUpCollision() {
       const playerEl = document.getElementById("player");
       playerEl.src = "imgs/char-with-powerUp.png";
       player.canShoot = true;
+
+      showPowerUpMessage(
+        'You have collected Caps shield — press "E" to use it!',
+        2000
+      );
     }
   });
 }
