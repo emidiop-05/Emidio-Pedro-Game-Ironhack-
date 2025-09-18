@@ -110,13 +110,16 @@ body {
   padding: 0;
   margin: 0;
 }
+
 #game-timer {
   position: relative;
   left: 20px;
 }
-#time-limit {
+#game-timer-2 {
   position: relative;
+  left: 20px;
 }
+
 .stats {
   position: absolute;
   top: 10px;
@@ -132,6 +135,13 @@ body {
 }
 
 #time-limit {
+  position: relative;
+  padding-left: 750px;
+  padding-right: 0;
+  margin-right: 0;
+}
+
+#time-limit-2 {
   position: relative;
   padding-left: 750px;
   padding-right: 0;

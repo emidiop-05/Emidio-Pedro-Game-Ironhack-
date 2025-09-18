@@ -40,6 +40,131 @@ const enemy = {
   el: null,
 };
 
+let enemy2 = {
+  x: enemy.x,
+  y: enemy.y,
+  w: enemy.w,
+  h: enemy.h,
+  vx: enemy.vx,
+  vy: enemy.vy,
+  onGround: false,
+  direction: 1,
+  el: null,
+};
+
+function createEnemy2() {
+  const enemyEl2 = document.createElement("div");
+  enemyEl2.id = "enemy-2";
+  enemyEl2.style.position = "absolute";
+  enemyEl2.style.width = enemy2.w + "px";
+  enemyEl2.style.height = enemy2.h + "px";
+  enemyEl2.style.backgroundImage =
+    'url("imgs/regular_monster-removebg-preview.png")';
+  enemyEl2.style.backgroundSize = "contain";
+  enemyEl2.style.backgroundRepeat = "no-repeat";
+  enemyEl2.style.backgroundPosition = "center";
+  enemyEl2.style.left = enemy2.x + "px";
+  enemyEl2.style.bottom = enemy2.y + "px";
+  enemyEl2.style.zIndex = "5";
+
+  document.getElementById("second-level").appendChild(enemyEl2);
+  enemy2.el = enemyEl2;
+}
+
+function updateEnemy2() {
+  enemy2.x += enemy2.vx * enemy2.direction;
+
+  if (Math.random() < 0.01) enemy2.direction *= -1;
+  const gameScreen2 = document.getElementById("second-level");
+  const maxX = gameScreen2.offsetWidth;
+  if (enemy2.x <= 0) enemy2.direction = 1;
+  if (enemy2.x + enemy2.w >= maxX) enemy2.direction = -1;
+
+  applyEnemyPhysics2();
+
+  enemy2.el.style.left = enemy2.x + "px";
+  enemy2.el.style.bottom = enemy2.y + "px";
+
+  checkEnemyCollision2();
+
+  requestAnimationFrame(updateEnemy2);
+}
+
+function applyEnemyPhysics2() {
+  enemy2.onGround = false;
+  enemy2.vy -= gravity;
+  enemy2.y += enemy2.vy;
+
+  platforms2.forEach((plat) => {
+    const platTop = plat.y + plat.h;
+    const platLeft = plat.x;
+    const platRight = plat.x + plat.w;
+
+    const enemyBottom = enemy2.y;
+    const enemyTop = enemy2.y + enemy2.h;
+    const enemyLeft = enemy2.x;
+    const enemyRight = enemy2.x + enemy2.w;
+
+    if (
+      enemyRight > platLeft &&
+      enemyLeft < platRight &&
+      enemyTop > plat.y &&
+      enemyBottom < platTop
+    ) {
+      const overlapTop = Math.abs(enemyBottom - platTop);
+      const overlapBottom = Math.abs(enemyTop - plat.y);
+
+      if (overlapTop < overlapBottom) {
+        enemy2.y = platTop;
+        enemy2.vy = 0;
+        enemy2.onGround = true;
+      }
+    }
+  });
+
+  if (enemy2.y <= 0) {
+    enemy2.y = 0;
+    enemy2.vy = 0;
+    enemy2.onGround = true;
+  }
+}
+
+function checkEnemyCollision2() {
+  const playerBox = {
+    x: player2.x,
+    y: player2.y,
+    w: player2.w,
+    h: player2.h,
+  };
+  const enemyBox = {
+    x: enemy2.x,
+    y: enemy2.y,
+    w: enemy2.w,
+    h: enemy2.h,
+  };
+
+  const horizontal =
+    playerBox.x + playerBox.w > enemyBox.x &&
+    playerBox.x < enemyBox.x + enemyBox.w;
+  const vertical =
+    playerBox.y + playerBox.h > enemyBox.y &&
+    playerBox.y < enemyBox.y + enemyBox.h;
+
+  if (horizontal && vertical) {
+    const firstPlat = platforms2[0];
+    player2.x = firstPlat.x + 10;
+    player2.y = firstPlat.y + firstPlat.h;
+    player2.vx = 0;
+    player2.vy = 0;
+    player2.jumping = false;
+    player2.onGround = true;
+
+    const playerEl2 = document.getElementById("player-2");
+    playerEl2.style.left = player2.x + "px";
+    playerEl2.style.bottom = player2.y + "px";
+  }
+}
+
 const powerUps = [
   {
     x: 162.5,
@@ -51,6 +176,31 @@ const powerUps = [
   },
 ];
 
+function createPowerUpsForLevel2() {
+  powerUps.forEach((pu) => {
+    if (!pu.el2) {
+      const div2 = document.createElement("div");
+      div2.classList.add("power-up");
+      div2.style.left = pu.x + "px";
+      div2.style.bottom = pu.y + "px";
+      div2.style.width = pu.w + "px";
+      div2.style.height = pu.h + "px";
+      div2.style.backgroundImage = 'url("imgs/luckyblock.png")';
+      div2.style.backgroundSize = "contain";
+      div2.style.backgroundRepeat = "no-repeat";
+      div2.style.position = "absolute";
+      div2.style.zIndex = "4";
+
+      document.getElementById("second-level").appendChild(div2);
+      pu.el2 = div2;
+      pu.collected2 = false;
+    } else {
+      pu.el2.style.display = "block";
+      pu.collected2 = false;
+    }
+  });
+}
+
 let currentLevel = 1;
 // ---------------- Physics ----------------
 const gravity = 0.5;
@@ -61,7 +211,14 @@ function updateProjectiles() {
   projectiles.forEach((proj, index) => {
     proj.x += proj.vx;
 
-    const enemyBox = { x: enemy.x, y: enemy.y, w: enemy.w, h: enemy.h };
+    const currentEnemy = currentLevel === 1 ? enemy : enemy2;
+
+    const enemyBox = {
+      x: currentEnemy.x,
+      y: currentEnemy.y,
+      w: currentEnemy.w,
+      h: currentEnemy.h,
+    };
     const projBox = { x: proj.x, y: proj.y, w: proj.w, h: proj.h };
 
     const horizontal =
@@ -73,14 +230,17 @@ function updateProjectiles() {
       proj.el.remove();
       projectiles.splice(index, 1);
 
-      enemy.x = 0;
-      enemy.y = 0;
+      currentEnemy.x = 0;
+      currentEnemy.y = 0;
       return;
     }
 
     proj.el.style.left = proj.x + "px";
 
-    if (proj.x > gameWidth) {
+    const gameScreen =
+      currentLevel === 1 ? gameArea : document.getElementById("second-level");
+    const maxX = gameScreen.offsetWidth;
+    if (proj.x > maxX) {
       proj.el.remove();
       projectiles.splice(index, 1);
     }
@@ -326,22 +486,62 @@ function applyEnemyPhysics() {
 }
 
 updateEnemy();
+
+const keys2 = {
+  ArrowLeft: false,
+  ArrowRight: false,
+  ArrowUp: false,
+  q: false,
+};
 // ---------------- Controls ----------------
 document.addEventListener("keydown", (e) => {
-  if (keys.hasOwnProperty(e.key)) {
-    keys[e.key] = true;
-    e.preventDefault();
-  }
+  if (keys.hasOwnProperty(e.key)) keys[e.key] = true;
+  if (keys2.hasOwnProperty(e.key)) keys2[e.key] = true;
+
+  if (player.canShoot && e.key === "e") shootProjectile();
+  if (player2.canShoot && e.key === "q") shootProjectile2();
 });
 document.addEventListener("keyup", (e) => {
   if (keys.hasOwnProperty(e.key)) keys[e.key] = false;
+  if (keys2.hasOwnProperty(e.key)) keys2[e.key] = false;
 });
 
 document.addEventListener("keydown", (e) => {
   if (player.canShoot && e.key === "e") {
     shootProjectile();
   }
+  if (player2.canShoot && e.key === "q") {
+    shootProjectile2();
+  }
 });
+function shootProjectile2() {
+  const proj = {
+    x: player2.x + player2.w / 2,
+    y: player2.y + player2.h / 2,
+    w: 60,
+    h: 60,
+    vx: 4,
+    el: null,
+  };
+
+  const div = document.createElement("div");
+  div.classList.add("projectile");
+  div.style.position = "absolute";
+  div.style.left = proj.x + "px";
+  div.style.bottom = proj.y + "px";
+  div.style.width = proj.w + "px";
+  div.style.height = proj.h + "px";
+  div.style.backgroundImage = 'url("imgs/shield-ammo.png")';
+  div.style.backgroundSize = "contain";
+  div.style.backgroundRepeat = "no-repeat";
+  div.style.backgroundPosition = "center";
+  div.style.zIndex = "5";
+
+  document.getElementById("second-level").appendChild(div);
+
+  proj.el = div;
+  projectiles.push(proj);
+}
 
 const keys = {
   ArrowLeft: false,
@@ -570,6 +770,24 @@ function checkExitCollision2() {
   }
 }
 
+function checkPowerUpCollision2() {
+  powerUps.forEach((pu) => {
+    if (pu.collected2) return;
+
+    const horizontal = player2.x + player2.w > pu.x && player2.x < pu.x + pu.w;
+    const vertical = player2.y + player2.h > pu.y && player2.y < pu.y + pu.h;
+
+    if (horizontal && vertical) {
+      pu.collected2 = true;
+      pu.el2.style.display = "none";
+
+      const playerEl2 = document.getElementById("player-2");
+      playerEl2.src = "imgs/char-with-powerUp.png";
+      player2.canShoot = true;
+    }
+  });
+}
+
 function levelComplete() {
   if (currentLevel === 1) {
     document.getElementById("first-level").style.display = "none";
@@ -589,15 +807,19 @@ function levelComplete() {
     playerEl2.style.left = player2.x + "px";
     playerEl2.style.bottom = player2.y + "px";
 
-    resetTimer();
-    startTimer();
-  } else if (currentLevel === 2) {
-    secondLevel.style.display = "none";
-    winScreen.style.display = "block";
-    stopTimer2();
+    stopTimer();
+    resetTimer2();
+    startTimer2();
+    createEnemy2();
+    updateEnemy2();
+    createPowerUpsForLevel2();
+
+    powerUps.forEach((pu) => {
+      pu.collected = false;
+      pu.el.style.display = "block";
+    });
   }
 }
-
 function level2Complete() {
   document.getElementById("second-level").style.display = "none";
   document.getElementById("win-screen").style.display = "block";
@@ -673,6 +895,7 @@ function updatePlayer2() {
   checkPlatformCollision2();
   checkLavaCollision2();
   checkExitCollision2();
+  checkPowerUpCollision2();
 
   const playerEl2 = document.getElementById("player-2");
 

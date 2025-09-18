@@ -4,10 +4,12 @@ const lostScreen = document.getElementById("lost-screen");
 const startBtn = document.getElementById("start-btn");
 const restartBtn = document.getElementById("restart-btn");
 const firstLevel = document.getElementById("first-level");
+const gameScreen = document.getElementById("game-screen");
 const playerEl = document.getElementById("player");
 const lostRestartBtn = document.getElementById("restart-btn-lost");
 const timerEl = document.getElementById("timer");
 const timerEl2 = document.getElementById("timer-2");
+const completionTimesEl = document.getElementById("completion-times");
 
 const soundOnBtn = document.getElementById("sound-on");
 const soundOffBtn = document.getElementById("sound-off");
@@ -118,6 +120,7 @@ startBtn.addEventListener("click", () => {
   winScreen.style.display = "none";
   lostScreen.style.display = "none";
   firstLevel.style.display = "block";
+  gameScreen.style.display = "block";
 
   resetPlayer();
   startTimer();
@@ -145,6 +148,8 @@ restartBtn.addEventListener("click", () => {
   for (let key in keys) keys[key] = false;
 });
 lostRestartBtn.addEventListener("click", () => {
+  stopTimer();
+  stopTimer2();
   startScreen.style.display = "none";
   winScreen.style.display = "none";
   lostScreen.style.display = "none";
