@@ -499,7 +499,7 @@ document.addEventListener("keydown", (e) => {
   if (keys2.hasOwnProperty(e.key)) keys2[e.key] = true;
 
   if (player.canShoot && e.key === "e") shootProjectile();
-  if (player2.canShoot && e.key === "q") shootProjectile2();
+  if (player2.canShoot && e.key === "e") shootProjectile2();
 });
 document.addEventListener("keyup", (e) => {
   if (keys.hasOwnProperty(e.key)) keys[e.key] = false;

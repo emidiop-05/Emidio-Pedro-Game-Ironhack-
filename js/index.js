@@ -75,11 +75,10 @@ function timeUp() {
 
 let startTime2 = 0;
 let timerInterval2 = null;
-const maxTimeInMs2 = 60 * 335; // 20 minutes
-
+const maxTimeInMs2 = 60 * 335;
 function startTimer2() {
   startTime2 = Date.now();
-  timerInterval2 = setInterval(updateTimer2, 10); // no parameter needed
+  timerInterval2 = setInterval(updateTimer2, 10);
 }
 
 function updateTimer2() {
